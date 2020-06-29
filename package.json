@@ -1,0 +1,39 @@
+{
+  "name": "@hydrogen-design-system/component-button",
+  "version": "0.0.1",
+  "description": "Hydrogen's functional button component.",
+  "main": "npm.js",
+  "scripts": {
+    "test": "npx gulp",
+    "build": "npx gulp build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hydrogen-design-system/component-button.git"
+  },
+  "author": "Josh Beveridge",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hydrogen-design-system/component-button/issues"
+  },
+  "homepage": "https://github.com/hydrogen-design-system/component-button#readme",
+  "devDependencies": {
+    "@hydrogen-design-system/core": "file:../../core",
+    "autoprefixer": "^9.7.3",
+    "browserslist": "^4.8.2",
+    "browser-sync": "^2.26.7",
+    "cssnano": "^4.1.10",
+    "del": "^3.0.0",
+    "gulp": "^4.0.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-gzip": "^1.4.2",
+    "gulp-postcss": "^8.0.0",
+    "gulp-rename": "^1.4.0",
+    "gulp-sass": "^4.1.0",
+    "gulp-uglify": "^3.0.1",
+    "sass": "^1.26.8"
+  },
+  "browserslist": [
+    "last 1 version and not dead"
+  ]
+}
