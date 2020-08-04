@@ -4,7 +4,7 @@
   "description": "Hydrogen's functional button component.",
   "main": "npm.js",
   "scripts": {
-    "test": "npx gulp",
+    "dev": "npx gulp dev",
     "build": "npx gulp build"
   },
   "repository": {
@@ -17,11 +17,14 @@
     "url": "https://github.com/hydrogen-design-system/component-button/issues"
   },
   "homepage": "https://github.com/hydrogen-design-system/component-button#readme",
+  "dependencies": {
+    "cash-dom": "^8.0.0"
+  },
   "devDependencies": {
-    "@hydrogen-design-system/core": "file:../../core",
+    "@hydrogen-design-system/core": "0.0.14",
     "autoprefixer": "^9.7.3",
-    "browserslist": "^4.8.2",
     "browser-sync": "^2.26.7",
+    "browserslist": "^4.8.2",
     "cssnano": "^4.1.10",
     "del": "^3.0.0",
     "gulp": "^4.0.2",
@@ -29,6 +32,7 @@
     "gulp-gzip": "^1.4.2",
     "gulp-postcss": "^8.0.0",
     "gulp-rename": "^1.4.0",
+    "gulp-replace": "^1.0.0",
     "gulp-sass": "^4.1.0",
     "gulp-uglify": "^3.0.1",
     "sass": "^1.26.8"

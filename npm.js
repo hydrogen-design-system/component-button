@@ -1,1 +1,1 @@
-console.log("Component/Button is here!");
+console.log("This is the Hydrogen button component.");

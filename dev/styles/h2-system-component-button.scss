@@ -1,0 +1,59 @@
+// Hydrogen / Components / Button (System)
+// This file is processed and then imported into @hydrogen-design-system/system
+
+// File paths must respect how the system's architecture works.
+// - root
+//   - core
+//     - styles
+//   - properties
+//     - styles
+//     - individual properties
+//       - styles
+//   - components
+//     - individual components
+//       - [you're here]
+
+// Unlike the versioned copy, this stylesheet doesn't require Hydrogen's core because the core is imported by the system itself in that repository later on.
+
+// Forward theme variables from the core module first so that they can be accessed and modified.
+@forward "../../core/defaults";
+
+// Load map variables from the core module so that the component can leverage them when generating selectors.
+@use "../../core/maps" as maps;
+
+// Load functions from the core module so that the component can leverage them when generating selectors.
+@use "../../core/functions" as fn;
+
+// Load theme variables from the core module so that they can be passed to the component mixins.
+@use "../../core/defaults" as var;
+
+// Load the component so that its mixins can be accessed.
+@use "component-button" as *;
+
+// Load the generic button mixin with its respective theme variables.
+[data-h2-button] {
+    @include h2ComponentButtonGeneric($focus-color: var.$focus-color, $gray: var.$gray, $hover-bg-color: var.$hover-bg-color, $hover-font-color: var.$hover-font-color);
+}
+
+// Load anchor specific button mixin.
+a[data-h2-button] {
+    @include h2ComponentButtonAnchor();
+}
+
+// Load the custom button styles for both regular buttons and anchors with their respective theme variables.
+@each $sizeKey, $sizeValue in maps.$size-map {
+    @each $radiusKey, $radiusValue in maps.$radius-map {
+        @each $colorKey, $colorValue in maps.$color-map {
+            @each $styleKey, $styleValue in maps.$button-type-map {
+                [data-h2-button*="#{$colorKey}, #{$radiusKey}, #{$sizeKey}, #{$styleKey}"],
+                a[data-h2-button*="#{$colorKey}, #{$radiusKey}, #{$sizeKey}, #{$styleKey}"] {
+                    @include h2ComponentButtonCustom($radius: $radiusValue, $style: $styleKey, $color: $colorValue, $white: var.$white, $black: var.$black, $hover-font-color: var.$hover-font-color, $size: $sizeKey, $font-scale-small: var.$font-scale-small, $font-scale-default: var.$font-scale-default, $font-scale-h5: var.$font-scale-h5, $padding: var.$padding);
+                    // Frustratingly, you can't pass a function to a mixin? That or the syntax isn't well documented.
+                    @if $styleKey == "solid" {
+                        color: fn.contrasting-color($colorValue, var.$white, var.$black);
+                    }
+                }
+            }
+        }
+    }
+}
