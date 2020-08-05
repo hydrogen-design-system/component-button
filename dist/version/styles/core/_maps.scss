@@ -122,7 +122,7 @@ $position-list: ("absolute", "relative", "static", "fixed", "sticky");
 
 // Radius
 $radius-map: (
-    "square": "0px",
+    "square": 0,
     "round": $border-radius-round,
     "pill": $border-radius-pill
 );

@@ -16,23 +16,6 @@
         box-shadow: -3px -3px 0 $focus-color, 3px -3px 0 $focus-color, 3px 3px 0 $focus-color, -3px 3px 0 $focus-color;
     }
 
-    &:disabled,
-    &.disabled {
-        background: lighten($gray, 30%);
-        border-color: lighten($gray, 30%);
-        color: $gray;
-        pointer-events: none;
-    }
-
-    @media (hover: hover) {
-        &:hover {
-            background: rgba($hover-bg-color, .2);
-            border-color: $hover-bg-color;
-            color: $hover-font-color;
-            transition: all .2s ease;
-        }
-    }
-
 }
 
 @mixin h2ComponentButtonAnchor() {
@@ -42,17 +25,70 @@
     vertical-align: middle;
 }
 
-@mixin h2ComponentButtonCustom($radius, $style, $color, $white, $black, $hover-font-color, $size, $font-scale-small, $font-scale-default, $font-scale-h5, $padding) {
+@mixin h2ComponentButtonColor(
+    $color,
+    $gray
+) {
+    border-color: $color;
+
+    &:disabled,
+    &.disabled {
+        border-color: lighten($gray, 30%);
+    }
+
+}
+
+@mixin h2ComponentButtonRadius(
+    $radius
+) {
     border-radius: $radius;
+}
+
+@mixin h2ComponentButtonSize(
+    $font-small,
+    $font-medium,
+    $font-large,
+    $padding,
+    $size
+) {
+    
+    @if $size == "small" {
+        font-size: $font-small;
+        padding: calc((#{$padding} / 2) * .5) calc(#{$padding} / 2);
+    }
+
+    @if $size == "normal" {
+        font-size: $font-medium;
+        padding: calc(#{$padding} * .5) $padding;
+    }
+
+    @if $size == "large" {
+        font-size: $font-large;
+        padding: calc((#{$padding} * 1.5) * .5) calc(#{$padding} * 1.5);
+    }
+
+}
+
+@mixin h2ComponentButtonStyle(
+    $color,
+    $gray,
+    $hover-bg-color,
+    $hover-font-color,
+    $style
+) {
 
     @if $style == "solid" {
         background: $color;
-        border: 1px solid $color;
+        border-color: $color;
+        border-style: solid;
+        border-width: 1px;
     }
 
     @if $style == "outline" {
         background: none;
-        border: 1px solid $color;
+        border-color: $color;
+        border-style: solid;
+        border-width: 1px;
         color: $color;
     }
 
@@ -72,19 +108,21 @@
 
     }
 
-    @if $size == "small" {
-        font-size: $font-scale-small;
-        padding: calc((#{$padding} / 2) * .5) calc(#{$padding} / 2);
+    &:disabled,
+    &.disabled {
+        background: lighten($gray, 30%);
+        border-color: lighten($gray, 30%);
+        color: $gray;
+        pointer-events: none;
     }
 
-    @if $size == "normal" {
-        font-size: $font-scale-default;
-        padding: calc(#{$padding} * .5) $padding;
-    }
-
-    @if $size == "large" {
-        font-size: $font-scale-h5;
-        padding: calc((#{$padding} * 1.5) * .5) calc(#{$padding} * 1.5);
+    @media (hover: hover) {
+        &:hover {
+            background: rgba($hover-bg-color, .2);
+            border-color: $hover-bg-color;
+            color: $hover-font-color;
+            transition: all .2s ease;
+        }
     }
 
 }
