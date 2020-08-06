@@ -21,7 +21,7 @@ sass.compiler = require('sass');
 const component = "component-button";
 
 // Version
-const verCSS = "0-0-3";
+const verCSS = "0-0-4";
 const verJS = verCSS.replace("-", "").replace("-", "");
 
 // Development Tasks

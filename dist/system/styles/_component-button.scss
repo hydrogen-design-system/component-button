@@ -57,7 +57,7 @@
         padding: calc((#{$padding} / 2) * .5) calc(#{$padding} / 2);
     }
 
-    @if $size == "normal" {
+    @if $size == "medium" {
         font-size: $font-medium;
         padding: calc(#{$padding} * .5) $padding;
     }
