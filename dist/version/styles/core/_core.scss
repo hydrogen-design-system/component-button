@@ -6,7 +6,7 @@
 @use "functions" as *;
 
 // Body-specific Style Reset
-@mixin h2BodyStyle {
+@mixin h2-body-style {
     margin: 0; // Resets the default 8px value.
     max-width: 100%;
     min-height: 100vh;
@@ -22,7 +22,7 @@
 }
 
 // Universal Style Reset
-@mixin h2UniversalReset {
+@mixin h2-universal-reset {
 
     * {
         box-sizing: border-box;

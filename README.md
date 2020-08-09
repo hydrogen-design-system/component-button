@@ -23,14 +23,14 @@ The core code for this component can be found in:
 You will need:
 - [Node](https://nodejs.org/en/)
 
-To contribute:
-- `git clone` this repository
-- `npm install`
-- `npm run test`
-
 ### Important Commands
-- `npm run test`
+- `npm install`
+  - installs all development dependencies
+- `npm run dev`
   - builds the versioned instance of the component and opens the test file in your browser with browser-sync running so that you can moderate your changes
 - `npm run build`
   - runs the build command to process all files for production
   - this will automatically build the system and instanced versions of the component
+- `npm publish`
+  - builds the component
+  - publishes it to the public package repository

@@ -25,49 +25,53 @@
 // $H2VER is replaced during the Gulp build script with the current component version, set in Gulpfile.js, before Sass is compiled.
 [data-h2-button-$H2VER] {
     // Load the component's unique reset styles.
-    @include h2ComponentButtonReset();
+    @include h2-component-button-reset();
     // Load the core.
-    @include core.h2UniversalReset;
+    @include core.h2-universal-reset;
     // Load the generic component mixin.
-    @include h2ComponentButtonGeneric(
+    @include h2-component-button-generic(
         $focus-color: var.$focus-color, 
         $gray: var.$gray, 
         $hover-bg-color: var.$hover-bg-color, 
-        $hover-font-color: var.$hover-font-color);
+        $hover-font-color: var.$hover-font-color
+    );
 }
 
 // Load anchor specific button mixin.
 a[data-h2-button-$H2VER] {
-    @include h2ComponentButtonAnchor();
+    @include h2-component-button-anchor();
 }
 
 // Load the color button styles with their respective theme variables.
 @each $colorKey, $colorValue in maps.$color-map {
     [data-h2-button-$H2VER*="#{$colorKey}"],
     a[data-h2-button-$H2VER*="#{$colorKey}"] {
-        @include h2ComponentButtonColor(
+        @include h2-component-button-color(
             $color: $colorValue,
-            $gray: var.$gray);
+            $gray: var.$gray
+        );
     }
 }
 // Load the radius button styles with their respective theme variables.
 @each $radiusKey, $radiusValue in maps.$radius-map {
     [data-h2-button-$H2VER*="#{$radiusKey}"],
     a[data-h2-button-$H2VER*="#{$radiusKey}"] {
-        @include h2ComponentButtonRadius(
-            $radius: $radiusValue);
+        @include h2-component-button-radius(
+            $radius: $radiusValue
+        );
     }
 }
 // Load the size button styles with their respective theme variables.
 @each $sizeKey, $sizeValue in maps.$size-map {
     [data-h2-button-$H2VER*="#{$sizeKey}"],
     a[data-h2-button-$H2VER*="#{$sizeKey}"] {
-        @include h2ComponentButtonSize(
+        @include h2-component-button-size(
             $font-small: var.$font-scale-small,
             $font-medium: var.$font-scale-default,
             $font-large: var.$font-scale-h5,
             $padding: var.$padding,
-            $size: $sizeValue);
+            $size: $sizeValue
+        );
     }
 }
 // Load the style button styles with their respective theme variables - the style variations also have color implications, hence the color loop.
@@ -75,12 +79,13 @@ a[data-h2-button-$H2VER] {
     @each $styleKey, $styleValue in maps.$button-type-map {
         [data-h2-button-$H2VER*="#{$colorKey}"][data-h2-button-$H2VER*="#{$styleKey}"],
         a[data-h2-button-$H2VER*="#{$colorKey}"][data-h2-button-$H2VER*="#{$styleKey}"] {
-            @include h2ComponentButtonStyle(
-            $color: $colorValue,
-            $gray: var.$gray,
-            $hover-bg-color: var.$hover-bg-color,
-            $hover-font-color: var.$hover-font-color,
-            $style: $styleKey);
+            @include h2-component-button-style(
+                $color: $colorValue,
+                $gray: var.$gray,
+                $hover-bg-color: var.$hover-bg-color,
+                $hover-font-color: var.$hover-font-color,
+                $style: $styleKey
+            );
             // Frustratingly, you can't pass a function to a mixin? That or the syntax isn't well documented.
             @if $styleKey == "solid" {
                 color: fn.contrasting-color($colorValue, var.$white, var.$black);

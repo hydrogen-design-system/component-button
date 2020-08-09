@@ -2,8 +2,8 @@
 @use "defaults" as *;
 @use "core" as *;
 body[data-h2-core] {
-    @include h2BodyStyle;
+    @include h2-body-style;
 }
 [data-h2-core] {
-    @include h2UniversalReset;
+    @include h2-universal-reset;
 }

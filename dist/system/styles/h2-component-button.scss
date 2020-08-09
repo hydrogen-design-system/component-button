@@ -32,45 +32,49 @@
 
 // Load the generic button mixin with its respective theme variables.
 [data-h2-button] {
-    @include h2ComponentButtonGeneric(
+    @include h2-component-button-generic(
         $focus-color: var.$focus-color, 
         $gray: var.$gray, 
         $hover-bg-color: var.$hover-bg-color, 
-        $hover-font-color: var.$hover-font-color);
+        $hover-font-color: var.$hover-font-color
+    );
 }
 
 // Load anchor specific button mixin.
 a[data-h2-button] {
-    @include h2ComponentButtonAnchor();
+    @include h2-component-button-anchor();
 }
 
 // Load the color button styles with their respective theme variables.
 @each $colorKey, $colorValue in maps.$color-map {
     [data-h2-button*="#{$colorKey}"],
     a[data-h2-button*="#{$colorKey}"] {
-        @include h2ComponentButtonColor(
+        @include h2-component-button-color(
             $color: $colorValue,
-            $gray: var.$gray);
+            $gray: var.$gray
+        );
     }
 }
 // Load the radius button styles with their respective theme variables.
 @each $radiusKey, $radiusValue in maps.$radius-map {
     [data-h2-button*="#{$radiusKey}"],
     a[data-h2-button*="#{$radiusKey}"] {
-        @include h2ComponentButtonRadius(
-            $radius: $radiusValue);
+        @include h2-component-button-radius(
+            $radius: $radiusValue
+        );
     }
 }
 // Load the size button styles with their respective theme variables.
 @each $sizeKey, $sizeValue in maps.$size-map {
     [data-h2-button*="#{$sizeKey}"],
     a[data-h2-button*="#{$sizeKey}"] {
-        @include h2ComponentButtonSize(
+        @include h2-component-button-size(
             $font-small: var.$font-scale-small,
             $font-medium: var.$font-scale-default,
             $font-large: var.$font-scale-h5,
             $padding: var.$padding,
-            $size: $sizeValue);
+            $size: $sizeValue
+        );
     }
 }
 // Load the style button styles with their respective theme variables - the style variations also have color implications, hence the color loop.
@@ -78,12 +82,13 @@ a[data-h2-button] {
     @each $styleKey, $styleValue in maps.$button-type-map {
         [data-h2-button*="#{$colorKey}"][data-h2-button*="#{$styleKey}"],
         a[data-h2-button*="#{$colorKey}"][data-h2-button*="#{$styleKey}"] {
-            @include h2ComponentButtonStyle(
-            $color: $colorValue,
-            $gray: var.$gray,
-            $hover-bg-color: var.$hover-bg-color,
-            $hover-font-color: var.$hover-font-color,
-            $style: $styleKey);
+            @include h2-component-button-style(
+                $color: $colorValue,
+                $gray: var.$gray,
+                $hover-bg-color: var.$hover-bg-color,
+                $hover-font-color: var.$hover-font-color,
+                $style: $styleKey
+            );
             // Frustratingly, you can't pass a function to a mixin? That or the syntax isn't well documented.
             @if $styleKey == "solid" {
                 color: fn.contrasting-color($colorValue, var.$white, var.$black);

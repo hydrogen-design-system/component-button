@@ -1,10 +1,15 @@
 // Hydrogen / Components / Button
 
-@mixin h2ComponentButtonReset() {
+@mixin h2-component-button-reset() {
     padding: 0;
 }
 
-@mixin h2ComponentButtonGeneric($focus-color, $gray, $hover-bg-color, $hover-font-color) {
+@mixin h2-component-button-generic(
+    $focus-color, 
+    $gray, 
+    $hover-bg-color, 
+    $hover-font-color
+) {
     background: none;
     border: none;
     cursor: pointer;
@@ -18,14 +23,14 @@
 
 }
 
-@mixin h2ComponentButtonAnchor() {
+@mixin h2-component-button-anchor() {
     display: inline-block;
     max-width: 100%;
     text-decoration: underline;
     vertical-align: middle;
 }
 
-@mixin h2ComponentButtonColor(
+@mixin h2-component-button-color(
     $color,
     $gray
 ) {
@@ -38,13 +43,13 @@
 
 }
 
-@mixin h2ComponentButtonRadius(
+@mixin h2-component-button-radius(
     $radius
 ) {
     border-radius: $radius;
 }
 
-@mixin h2ComponentButtonSize(
+@mixin h2-component-button-size(
     $font-small,
     $font-medium,
     $font-large,
@@ -69,7 +74,7 @@
 
 }
 
-@mixin h2ComponentButtonStyle(
+@mixin h2-component-button-style(
     $color,
     $gray,
     $hover-bg-color,
