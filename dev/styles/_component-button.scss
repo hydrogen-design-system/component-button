@@ -76,6 +76,7 @@
 
 @mixin h2-component-button-style(
     $color,
+    $solid-font-color,
     $gray,
     $hover-bg-color,
     $hover-font-color,
@@ -87,6 +88,7 @@
         border-color: $color;
         border-style: solid;
         border-width: 1px;
+        color: $solid-font-color;
     }
 
     @if $style == "outline" {

@@ -81,15 +81,12 @@ a[data-h2-button-$H2VER] {
         a[data-h2-button-$H2VER*="#{$colorKey}"][data-h2-button-$H2VER*="#{$styleKey}"] {
             @include h2-component-button-style(
                 $color: $colorValue,
+                $solid-font-color: fn.contrasting-color($colorValue, var.$white, var.$black),
                 $gray: var.$gray,
                 $hover-bg-color: var.$hover-bg-color,
                 $hover-font-color: var.$hover-font-color,
                 $style: $styleKey
             );
-            // Frustratingly, you can't pass a function to a mixin? That or the syntax isn't well documented.
-            @if $styleKey == "solid" {
-                color: fn.contrasting-color($colorValue, var.$white, var.$black);
-            }
         }
     }
 }

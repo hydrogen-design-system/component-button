@@ -154,4 +154,9 @@
         }
     }
 
+    [data-h2-focus]:focus {
+        box-shadow: -3px -3px 0 $focus-color, 3px -3px 0 $focus-color, 3px 3px 0 $focus-color, -3px 3px 0 $focus-color;
+        outline: none;
+    }
+
 }

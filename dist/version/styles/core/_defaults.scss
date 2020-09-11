@@ -147,22 +147,18 @@ $padding: 1.25vw !default;
 
     // Cards
     $card-shadow: 0 3px 5px rgba(0, 0, 0, .5) !default;
-    $card-bg-color: $white !default;
 
     // Carousels
     $carousel-dot-color: lighten($gray, 35%) !default;
     $carousel-dot-active-color: $theme-color-1 !default;
 
-    // Code Blocks
-    $code-bg: $black !default;
-
     // Dialog Sizes
-    $dialog-small-screen: 90vw;
-    $dialog-medium-screen: 75vw;
-    $dialog-large-screen: 50vw;
+    $dialog-small-screen: 90vw !default;
+    $dialog-medium-screen: 75vw !default;
+    $dialog-large-screen: 50vw !default;
 
-    // Horizontal Rules
-    $hr-color: $theme-color-2 !default;
+    // Forms
+    $form-input-radius: 5px !default;
 
     // Menus
     $menu-bg-color: $black !default;
@@ -170,10 +166,3 @@ $padding: 1.25vw !default;
     $menu-font-color: $white !default;
     $menu-divider-color: rgba($theme-color-4, .5) !default;
     $menu-icon-color: $white !default;
-
-    // Pullquotes
-    $pullquote-color: $theme-color-2 !default;
-
-    // Tables
-    $table-heading-color: $theme-color-1 !default;
-    $table-alternating-color: rgba(0, 0, 0, .1) !default;
