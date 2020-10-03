@@ -123,9 +123,14 @@ $position-list: ("absolute", "relative", "static", "fixed", "sticky");
 // Radius
 $radius-map: (
     "square": 0,
-    "small": $border-radius-small,
-    "medium": $border-radius-medium,
-    "large": $border-radius-large,
+    "round": $border-radius-round,
+    "circle": 100%
+);
+
+$object-radius-map: (
+    "square": 0,
+    "round": $border-radius-round,
+    "pill": 50rem,
     "circle": 100%
 );
 

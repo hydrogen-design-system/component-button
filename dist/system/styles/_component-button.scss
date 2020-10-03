@@ -21,16 +21,25 @@
     vertical-align: middle;
 
     &:focus {
-        box-shadow: -1px -1px 0 $focus-color, 0 -2px 0 $focus-color, -1px 1px 0 $focus-color, 2px 0 0 $focus-color, 1px 1px 0 $focus-color, 0 2px 0 $focus-color, -1px 1px 0 $focus-color, -2px 0 0 $focus-color;
+        box-shadow: -1px -1px 0 $focus-color, 0 -1px 0 $focus-color, 1px -1px 0 $focus-color, 1px 0 0 $focus-color, 1px 1px 0 $focus-color, 0 1px 0 $focus-color, -1px 1px 0 $focus-color, -1px 0 0 $focus-color;
     }
 
 }
 
-@mixin h2-component-button-anchor() {
+@mixin h2-component-button-anchor(
+    $font-default,
+    $focus-color
+) {
     display: inline-block;
+    font-family: $font-default;
     max-width: 100%;
     text-decoration: underline;
     vertical-align: middle;
+
+    &:focus {
+        box-shadow: -1px -1px 0 $focus-color, 0 -1px 0 $focus-color, 1px -1px 0 $focus-color, 1px 0 0 $focus-color, 1px 1px 0 $focus-color, 0 1px 0 $focus-color, -1px 1px 0 $focus-color, -1px 0 0 $focus-color;
+    }
+
 }
 
 @mixin h2-component-button-color(

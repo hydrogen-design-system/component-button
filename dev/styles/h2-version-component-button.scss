@@ -40,7 +40,10 @@
 
 // Load anchor specific button mixin.
 a[data-h2-button-$H2VER] {
-    @include h2-component-button-anchor();
+    @include h2-component-button-anchor(
+        $font-default: var.$font-default,
+        $focus-color: var.$focus-color
+    );
 }
 
 // Load the color button styles with their respective theme variables.
@@ -54,7 +57,7 @@ a[data-h2-button-$H2VER] {
     }
 }
 // Load the radius button styles with their respective theme variables.
-@each $radiusKey, $radiusValue in maps.$radius-map {
+@each $radiusKey, $radiusValue in maps.$object-radius-map {
     [data-h2-button-$H2VER*="#{$radiusKey}"],
     a[data-h2-button-$H2VER*="#{$radiusKey}"] {
         @include h2-component-button-radius(
