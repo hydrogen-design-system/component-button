@@ -30,6 +30,7 @@
     @include core.h2-universal-reset;
     // Load the generic component mixin.
     @include h2-component-button-generic(
+        $font-default: var.$font-default,
         $focus-color: var.$focus-color, 
         $gray: var.$gray, 
         $hover-bg-color: var.$hover-bg-color, 

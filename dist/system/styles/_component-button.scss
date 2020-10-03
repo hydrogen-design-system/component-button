@@ -5,6 +5,7 @@
 }
 
 @mixin h2-component-button-generic(
+    $font-default,
     $focus-color, 
     $gray, 
     $hover-bg-color, 
@@ -13,12 +14,14 @@
     background: none;
     border: none;
     cursor: pointer;
+    font-family: $font-default;
     outline: none;
     text-align: center;
     transition: all .2s ease;
+    vertical-align: middle;
 
     &:focus {
-        box-shadow: -3px -3px 0 $focus-color, 3px -3px 0 $focus-color, 3px 3px 0 $focus-color, -3px 3px 0 $focus-color;
+        box-shadow: -1px -1px 0 $focus-color, 0 -2px 0 $focus-color, -1px 1px 0 $focus-color, 2px 0 0 $focus-color, 1px 1px 0 $focus-color, 0 2px 0 $focus-color, -1px 1px 0 $focus-color, -2px 0 0 $focus-color;
     }
 
 }

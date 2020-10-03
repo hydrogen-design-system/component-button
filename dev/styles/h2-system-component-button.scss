@@ -33,6 +33,7 @@
 // Load the generic button mixin with its respective theme variables.
 [data-h2-button] {
     @include h2-component-button-generic(
+        $font-default: var.$font-default,
         $focus-color: var.$focus-color, 
         $gray: var.$gray, 
         $hover-bg-color: var.$hover-bg-color, 
