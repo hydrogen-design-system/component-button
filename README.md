@@ -1,4 +1,16 @@
-# Hydrogen: Button Component
+# Hydrogen's button component
+
+## Installation
+
+You can install this component as a standalone package using `npm install @hydrogen-design-system/component-button --save-dev`
+
+This component can also be installed as a part of Hydrogen in its entirety. [Learn more](https://hydrogen.design).
+
+## Usage
+
+For standard usage, please see [Hydrogen's documentation](https://hydrogen.design).
+
+## Contributing
 
 Hydrogen's components are built using [Gulp](https://gulpjs.com/), [Sass](https://sass-lang.com), [Autoprefixer](https://github.com/postcss/autoprefixer), and [CSSnano](https://cssnano.co/).
 
@@ -9,21 +21,19 @@ This component module contains the following in the `dist` folder:
 - a versioned, isolated copy of the component that can be used independently of the system, either imported by a Sass project, or pulled as compiled CSS
 
 This component currently supports the following markup and/or frameworks:
-- raw HTML
+- HTML
 
-* Please ensure that work on this component updates all supported markup where possible.
+**Please ensure that work on this component updates all supported markup where possible.**
 
-## Contributing
-
-The core code for this component can be found in:
-- dev/markup/
-- dev/scripts/
-- dev/styles/_component-button.scss
+The code for this component can be found in:
+- `src/markup/`
+- `src/scripts/`
+- `src/styles/`
 
 You will need:
 - [Node](https://nodejs.org/en/)
 
-### Important Commands
+### Important commands
 - `npm install`
   - installs all development dependencies
 - `npm run dev`

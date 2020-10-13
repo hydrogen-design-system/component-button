@@ -29,7 +29,7 @@ const component = "component-" + componentArg.replace(/"/g, "");
 
         // Move component markup for system reference.
         function moveProdComponentSystemMarkup() {
-            return src("dev/markup/**/*")
+            return src("src/markup/**/*")
             .pipe(dest("dist/reference"));
         }
 
@@ -37,7 +37,7 @@ const component = "component-" + componentArg.replace(/"/g, "");
 
         // Move component scripts untouched.
         function prepProdComponentSystemScript() {
-            return src("dev/scripts/h2-" + component + ".js")
+            return src("src/scripts/h2-" + component + ".js")
             .pipe(replace("$H2VERCSS", ""))
             .pipe(replace("$H2VERJS", ""))
             .pipe(dest("dist/system/scripts"));
@@ -47,13 +47,13 @@ const component = "component-" + componentArg.replace(/"/g, "");
 
         // Move component Sass partial from dev to dist.
         function moveProdComponentPartialSystemSass() {
-            return src("dev/styles/_" + component + ".scss")
+            return src("src/styles/_" + component + ".scss")
             .pipe(dest("dist/system/styles"));
         }
 
         // Move component Sass from dev to dist.
         function moveProdComponentSystemSass() {
-            return src("dev/styles/h2-system-" + component + ".scss")
+            return src("src/styles/h2-system-" + component + ".scss")
             .pipe(rename(function(path) {
                 path.basename = "h2-" + component + "";
             }))
@@ -75,7 +75,7 @@ const component = "component-" + componentArg.replace(/"/g, "");
 
         // Move component scripts untouched.
         function prepProdComponentVersionScript() {
-            return src("dev/scripts/h2-" + component + ".js")
+            return src("src/scripts/h2-" + component + ".js")
             .pipe(replace("$H2VERCSS", "-" + verCSS))
             .pipe(replace("$H2VERJS", verJS))
             .pipe(rename(function(path) {
@@ -112,13 +112,13 @@ const component = "component-" + componentArg.replace(/"/g, "");
 
         // Move component Sass partials from dev to dist.
         function moveProdComponentPartialVersionSass() {
-            return src("dev/styles/_" + component + ".scss")
+            return src("src/styles/_" + component + ".scss")
             .pipe(dest("dist/version/styles"));
         }
 
         // Move component Sass from dev to dist.
         function moveProdComponentVersionSass() {
-            return src("dev/styles/h2-version-" + component + ".scss")
+            return src("src/styles/h2-version-" + component + ".scss")
             .pipe(replace("$H2VER", verCSS))
             .pipe(rename(function(path) {
                 path.basename = "h2-" + component + "-" + verCSS;

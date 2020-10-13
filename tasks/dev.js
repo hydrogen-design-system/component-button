@@ -31,7 +31,7 @@ const component = "component-" + componentArg.replace(/"/g, "");
 
     // Move the component scripts from dev to the server cache.
     function moveDevComponentScripts() {
-        return src("dev/scripts/h2-" + component + ".js")
+        return src("src/scripts/h2-" + component + ".js")
         .pipe(replace("$H2VERCSS", "-" + "0-0-0"))
         .pipe(replace("$H2VERJS", "000"))
         .pipe(dest("tests/cache"));
@@ -53,13 +53,13 @@ const component = "component-" + componentArg.replace(/"/g, "");
 
     // Move the component partial from dev to the server cache.
     function moveDevComponentPartialSass() {
-        return src("dev/styles/_" + component + ".scss")
+        return src("src/styles/_" + component + ".scss")
         .pipe(dest("tests/cache"));
     }
 
     // Move the component Sass from dev to the server cache.
     function moveDevComponentSass() {
-        return src("dev/styles/h2-version-" + component + ".scss")
+        return src("src/styles/h2-version-" + component + ".scss")
         .pipe(replace("$H2VER", "0-0-0"))
         .pipe(rename(function(path) {
             path.basename = "h2-" + component + "";
@@ -107,7 +107,7 @@ const devPrep = series(cleanCache, moveDevMarkup, moveDevComponentScripts, moveD
 
     // Watch dev and test files for changes.
     function watchDevFiles() {
-        watch(["dev/**/*", "tests/*.html"], series(devPrep, browserSyncReload));
+        watch(["src/**/*", "tests/*.html"], series(devPrep, browserSyncReload));
     }
 
 // Exports

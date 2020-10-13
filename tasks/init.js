@@ -26,76 +26,76 @@ var argv = require('yargs')
 
     // Replace Dev Files
     function initDevStylePartialReplace() {
-        return src("dev/styles/_component.scss")
+        return src("src/styles/_component.scss")
         .pipe(replace("$COMP", argv.c))
-        .pipe(dest("dev/styles"));
+        .pipe(dest("src/styles"));
     }
     function initDevStyleSystemReplace() {
-        return src("dev/styles/h2-system-component.scss")
+        return src("src/styles/h2-system-component.scss")
         .pipe(replace("$COMP", argv.c))
-        .pipe(dest("dev/styles"));
+        .pipe(dest("src/styles"));
     }
     function initDevStyleVersionReplace() {
-        return src("dev/styles/h2-version-component.scss")
+        return src("src/styles/h2-version-component.scss")
         .pipe(replace("$COMP", argv.c))
-        .pipe(dest("dev/styles"));
+        .pipe(dest("src/styles"));
     }
 
     // Rename Dev Files
 
     function initDevMarkUpRename() {
-        return src("dev/markup/h2-component.html")
+        return src("src/markup/h2-component.html")
         .pipe(rename(function(path) {
             path.basename = "h2-component-" + argv.c;
         }))
-        .pipe(dest("dev/markup"));
+        .pipe(dest("src/markup"));
     }
     function initDevMarkupDelete() {
-        return del("dev/markup/h2-component.html");
+        return del("src/markup/h2-component.html");
     }
 
     function initDevScriptRename() {
-        return src("dev/scripts/h2-component.js")
+        return src("src/scripts/h2-component.js")
         .pipe(rename(function(path) {
             path.basename = "h2-component-" + argv.c;
         }))
-        .pipe(dest("dev/scripts"));
+        .pipe(dest("src/scripts"));
     }
     function initDevScriptDelete() {
-        return del("dev/scripts/h2-component.js");
+        return del("src/scripts/h2-component.js");
     }
 
     function initDevStylePartialRename() {
-        return src("dev/styles/_component.scss")
+        return src("src/styles/_component.scss")
         .pipe(rename(function(path) {
             path.basename = "_component-" + argv.c;
         }))
-        .pipe(dest("dev/styles"));
+        .pipe(dest("src/styles"));
     }
     function initDevStylePartialDelete() {
-        return del("dev/styles/_component.scss");
+        return del("src/styles/_component.scss");
     }
 
     function initDevStyleSystemRename() {
-        return src("dev/styles/h2-system-component.scss")
+        return src("src/styles/h2-system-component.scss")
         .pipe(rename(function(path) {
             path.basename = "h2-system-component-" + argv.c;
         }))
-        .pipe(dest("dev/styles"));
+        .pipe(dest("src/styles"));
     }
     function initDevStyleSystemDelete() {
-        return del("dev/styles/h2-system-component.scss");
+        return del("src/styles/h2-system-component.scss");
     }
 
     function initDevStyleVersionRename() {
-        return src("dev/styles/h2-version-component.scss")
+        return src("src/styles/h2-version-component.scss")
         .pipe(rename(function(path) {
             path.basename = "h2-version-component-" + argv.c;
         }))
-        .pipe(dest("dev/styles"));
+        .pipe(dest("src/styles"));
     }
     function initDevStyleVersionDelete() {
-        return del("dev/styles/h2-version-component.scss");
+        return del("src/styles/h2-version-component.scss");
     }
 
 // Test Tasks
