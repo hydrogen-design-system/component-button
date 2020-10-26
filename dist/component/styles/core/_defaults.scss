@@ -1,0 +1,168 @@
+// Hydrogen / Default Variables
+
+// Border Options
+$border-thickness-thin: 1px !default;
+$border-thickness-thick: .5rem !default;
+
+$border-radius-round: 5px !default;
+
+// Color Variables
+
+    // Black & White
+    $white: #FFFFFF !default;
+    $black: rgba(10, 10, 20, 1) !default;
+
+    // Grey/Gray
+    $gray: rgba(150, 150, 150, 1) !default;
+
+    // Theme Colors
+    $theme-color-1: #c59fff !default;
+    $theme-color-2: #9D5CFF !default;
+    $theme-color-3: #613DC1 !default;
+    $theme-color-4: #00E5E3 !default;
+    $theme-color-5: #0A9DAE !default;
+
+    // Go, Slow, Stop
+    $go: green !default;
+    $slow: orange !default;
+    $stop: red !default;
+
+    // Focus
+    $focus-color: $theme-color-1 !default;
+
+    // Hover
+    $hover-font-color: $theme-color-4 !default;
+    $hover-bg-color: $theme-color-4 !default;
+
+    // Text Selection
+    $selection-bg-color: $theme-color-5 !default;
+
+// Font Variables
+
+    // Fonts
+    $font-sans: sans-serif !default;
+    $font-serif: serif !default;
+    $font-script: cursive !default;
+    $font-monospace: monospace !default;
+    $font-default: $font-sans !default;
+
+    // Default Line Height
+    $line-height: 1.5 !default;
+
+    // The Typography Scale
+
+        // Scale Multiplier
+        $font-scale: 1.333 !default;
+        // Standard Copy
+        $font-scale-default: 1rem !default;
+        $font-scale-small: calc(#{$font-scale-default}/(#{$font-scale})) !default;
+        // Headings
+        $font-scale-h6: $font-scale-default !default;
+        $font-scale-h5: calc(#{$font-scale-default}*(#{$font-scale})) !default;
+        $font-scale-h4: calc(#{$font-scale-h5}*(#{$font-scale})) !default;
+        $font-scale-h3: calc(#{$font-scale-h4}*(#{$font-scale})) !default;
+        $font-scale-h2: calc(#{$font-scale-h3}*(#{$font-scale})) !default;
+        $font-scale-h1: calc(#{$font-scale-h2}*(#{$font-scale})) !default;
+
+    // Headings
+
+        // h1
+        $heading-1-border-color: $theme-color-1 !default;
+        $heading-1-border-style: none none solid none !default;
+        $heading-1-border-width: 0px !default; 
+        $heading-1-font-color: $white !default;
+        $heading-1-font-family: $font-sans !default;
+        $heading-1-font-size: $font-scale-h1 !default;
+        $heading-1-font-weight: 900 !default;
+
+        // h2
+        $heading-2-border-color: $theme-color-1 !default;
+        $heading-2-border-style: none none solid none !default;
+        $heading-2-border-width: 0px !default; 
+        $heading-2-font-color: $theme-color-1 !default;
+        $heading-2-font-family: $font-sans !default;
+        $heading-2-font-size: $font-scale-h2 !default;
+        $heading-2-font-weight: 600 !default;
+
+        // h3
+        $heading-3-border-color: $gray !default;
+        $heading-3-border-style: none none solid none !default;
+        $heading-3-border-width: 1px !default; 
+        $heading-3-font-color: $black !default;
+        $heading-3-font-family: $font-sans !default;
+        $heading-3-font-size: $font-scale-h3 !default;
+        $heading-3-font-weight: normal !default;
+
+        // h4
+        $heading-4-border-color: $theme-color-3 !default;
+        $heading-4-border-style: none none solid none !default;
+        $heading-4-border-width: 0px !default; 
+        $heading-4-font-color: $theme-color-3 !default;
+        $heading-4-font-family: $font-sans !default;
+        $heading-4-font-size: $font-scale-h4 !default;
+        $heading-4-font-weight: 600 !default;
+
+        // h5
+        $heading-5-border-color: $gray !default;
+        $heading-5-border-style: none none solid none !default;
+        $heading-5-border-width: 1px !default;
+        $heading-5-font-color: $black !default;
+        $heading-5-font-family: $font-sans !default;
+        $heading-5-font-size: $font-scale-h5 !default;
+        $heading-5-font-weight: bold !default;
+
+        // h6
+        $heading-6-border-color: $gray !default;
+        $heading-6-border-style: none none solid none !default;
+        $heading-6-border-width: 1px !default;
+        $heading-6-font-color: $black !default;
+        $heading-6-font-family: $font-sans !default;
+        $heading-6-font-size: $font-scale-h6 !default;
+        $heading-6-font-weight: bold !default;
+
+// Grid Variables
+$grid-columns: 12 !default;
+
+// Layout Variables
+$layout-large: 80rem !default;
+$layout-medium: 60rem !default;
+$layout-small: 39rem !default;
+
+// Media Queries
+
+    // Small: 768px
+    $mq-small: "screen and (min-width: 48em)" !default;
+
+    // Medium: 1024px
+    $mq-medium: "screen and (min-width: 64em)" !default;
+
+    // Large: 1600px
+    $mq-large: "screen and (min-width: 100em)" !default;
+
+// Whitespace Variables
+$margin: 1.5rem !default;
+$padding: 1.5rem !default;
+
+// Component Options
+
+    // Cards
+    $card-shadow: 0 5px 10px rgba(0, 0, 0, .3) !default;
+
+    // Carousels
+    $carousel-dot-color: lighten($gray, 35%) !default;
+    $carousel-dot-active-color: $theme-color-1 !default;
+
+    // Dialog Sizes
+    $dialog-small-screen: 90vw !default;
+    $dialog-medium-screen: 75vw !default;
+    $dialog-large-screen: 50vw !default;
+
+    // Forms
+    $form-input-radius: 5px !default;
+
+    // Menus
+    $menu-bg-color: $black !default;
+    $submenu-bg-color: rgba(40, 40, 50, 1) !default;
+    $menu-font-color: $white !default;
+    $menu-divider-color: rgba($theme-color-4, .5) !default;
+    $menu-icon-color: $white !default;

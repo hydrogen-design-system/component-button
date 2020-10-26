@@ -22,8 +22,8 @@
 @use "component-button" as *;
 
 // Load the core and component mixins within the versioned component attribute, while passing them their respective theme variables.
-// 0-0-8 is replaced during the Gulp build script with the current component version, set in Gulpfile.js, before Sass is compiled.
-[data-h2-button-0-0-8] {
+//  is replaced during the Gulp build script with the current component version, set in Gulpfile.js, before Sass is compiled.
+[data-h2-button] {
     // Load the component's unique reset styles.
     @include h2-component-button-reset();
     // Load the core.
@@ -39,7 +39,7 @@
 }
 
 // Load anchor specific button mixin.
-a[data-h2-button-0-0-8] {
+a[data-h2-button] {
     @include h2-component-button-anchor(
         $font-default: var.$font-default,
         $focus-color: var.$focus-color
@@ -48,8 +48,8 @@ a[data-h2-button-0-0-8] {
 
 // Load the color button styles with their respective theme variables.
 @each $colorKey, $colorValue in maps.$color-map {
-    [data-h2-button-0-0-8*="#{$colorKey}"],
-    a[data-h2-button-0-0-8*="#{$colorKey}"] {
+    [data-h2-button*="#{$colorKey}"],
+    a[data-h2-button*="#{$colorKey}"] {
         @include h2-component-button-color(
             $color: $colorValue,
             $gray: var.$gray
@@ -58,8 +58,8 @@ a[data-h2-button-0-0-8] {
 }
 // Load the radius button styles with their respective theme variables.
 @each $radiusKey, $radiusValue in maps.$object-radius-map {
-    [data-h2-button-0-0-8*="#{$radiusKey}"],
-    a[data-h2-button-0-0-8*="#{$radiusKey}"] {
+    [data-h2-button*="#{$radiusKey}"],
+    a[data-h2-button*="#{$radiusKey}"] {
         @include h2-component-button-radius(
             $radius: $radiusValue
         );
@@ -67,8 +67,8 @@ a[data-h2-button-0-0-8] {
 }
 // Load the size button styles with their respective theme variables.
 @each $sizeKey, $sizeValue in maps.$size-map {
-    [data-h2-button-0-0-8*="#{$sizeKey}"],
-    a[data-h2-button-0-0-8*="#{$sizeKey}"] {
+    [data-h2-button*="#{$sizeKey}"],
+    a[data-h2-button*="#{$sizeKey}"] {
         @include h2-component-button-size(
             $font-small: var.$font-scale-small,
             $font-medium: var.$font-scale-default,
@@ -81,8 +81,8 @@ a[data-h2-button-0-0-8] {
 // Load the style button styles with their respective theme variables - the style variations also have color implications, hence the color loop.
 @each $colorKey, $colorValue in maps.$color-map {
     @each $styleKey, $styleValue in maps.$button-type-map {
-        [data-h2-button-0-0-8*="#{$colorKey}"][data-h2-button-0-0-8*="#{$styleKey}"],
-        a[data-h2-button-0-0-8*="#{$colorKey}"][data-h2-button-0-0-8*="#{$styleKey}"] {
+        [data-h2-button*="#{$colorKey}"][data-h2-button*="#{$styleKey}"],
+        a[data-h2-button*="#{$colorKey}"][data-h2-button*="#{$styleKey}"] {
             @include h2-component-button-style(
                 $color: $colorValue,
                 $solid-font-color: fn.contrasting-color($colorValue, var.$white, var.$black),

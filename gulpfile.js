@@ -3,7 +3,7 @@
 "use strict";
 
 // Requirements
-const { series, parallel, src, dest, watch } = require('gulp');
+const { series } = require('gulp');
 const importInit = require("./tasks/init");
 const importDev = require("./tasks/dev");
 const importBuild = require("./tasks/build");

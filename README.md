@@ -18,8 +18,6 @@ For standard usage, please see [Hydrogen's documentation](https://hydrogen.desig
 
 Hydrogen's components are built using [Gulp](https://gulpjs.com/), [Sass](https://sass-lang.com), [Autoprefixer](https://github.com/postcss/autoprefixer), and [CSSnano](https://cssnano.co/).
 
-Hydrogen components require [Cash](https://kenwheeler.github.io/cash/) to work properly. Cash is a lightweight jQuery alternative and will eventually be phased out of Hydrogen in favour of vanilla JavaScript.
-
 This component module contains the following in the `dist` folder:
 - the component's code that is imported by @hydrogen-design-system/system
 - a versioned, isolated copy of the component that can be used independently of the system, either imported by a Sass project, or pulled as compiled CSS
@@ -36,6 +34,14 @@ The code for this component can be found in:
 
 You will need:
 - [Node](https://nodejs.org/en/)
+
+### _VERSION
+`_VERSION` is used by Hydrogen to process the component's files and generate a versioned instance of the component when it is built. Please ensure that all references to the main component's data-attribute have `_VERSION` appended (e.g. data-h2-accordion_VERSION) in the following places:
+- `src/markup`
+- `src/scripts`
+- `src/styles/h2-version-component.scss`
+
+It is also important to use `_VERSION` when creating a function for your component, as the scripts also need to be namespaced in the event a user imports an older version of your component (to prevent conflicting with the newest version). This can be done by creating functions in `src/scripts` that follow a `function myNewFunctionName_VERSION () {}` pattern.
 
 ### Important commands
 - `npm install`

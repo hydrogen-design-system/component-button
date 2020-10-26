@@ -5,112 +5,157 @@
 // Requirements
 const { series, parallel, src, dest, watch } = require('gulp');
 const autoprefixer = require('autoprefixer');
+const babel = require("gulp-babel");
+const browserify = require("browserify");
 const browsersync = require('browser-sync').create();
 const del = require('del');
+const fs = require('fs');
 const postcss = require('gulp-postcss');
 const rename = require('gulp-rename');
 const replace = require('gulp-replace');
 const sass = require('gulp-sass');
+var source = require('vinyl-source-stream');
 
+// Set the sass compiler (dart sass)
 sass.compiler = require('sass');
 
-// Component
-const componentArg = "button";
-const component = "component-" + componentArg.replace(/"/g, "");
+// Access the package.json file to pull the component's version number.
+var json = JSON.parse(fs.readFileSync('./package.json'));
 
-// Markup Prep
+// Set component and version variables.
+const component = json.component;
+const version = json.version.replace(/\./g, "");
+const componentVersion = "[data-h2-" + component + "-" + version + "]";
 
-    // Move HTML
-    function moveDevMarkup() {
-        return src("tests/index.html")
-        .pipe(replace("$H2VER", "0-0-0"))
-        .pipe(dest("tests/cache"));
-    }
+// Move and prepare the HTML.
 
-// Script Prep
+  // Move the component's markup.
+  function prepMarkup() {
+    return src("tests/index.html")
+    .pipe(replace("_VERSION", "-" + version))
+    .pipe(dest("tests/cache"));
+  }
 
-    // Move the component scripts from dev to the server cache.
-    function moveDevComponentScripts() {
-        return src("src/scripts/h2-" + component + ".js")
-        .pipe(replace("$H2VERCSS", "-" + "0-0-0"))
-        .pipe(replace("$H2VERJS", "000"))
-        .pipe(dest("tests/cache"));
-    }
+  // Create the task series.
+  const makeMarkup = series(prepMarkup);
 
-    // Move Cash.js from the module to the server cache.
-    function moveDevCash() {
-        return src("node_modules/cash-dom/dist/cash.min.js")
-        .pipe(dest("tests/cache"));
-    }
+// Move, transpile, compile, and refresh JavaScript. 
 
-// Style Prep
+  // Transpile via Babel.
+  function transpileScripts() {
+    return src("src/scripts/h2-component-" + component + ".js")
+    .pipe(replace("[data-h2-" + component + "_VERSION]", componentVersion))
+    .pipe(replace("_VERSION", version))
+    .pipe(babel({
+      presets: ['@babel/env']
+    }))
+    .pipe(rename(function(path) {
+      path.basename = "h2-temp-component-" + component + "";
+    }))
+    .pipe(dest("tests/cache"));
+  }
 
-    // Move the core system Sass from the module to the server cache.
-    function moveDevCoreSass() {
-        return src("node_modules/@hydrogen-design-system/core/dist/system/styles/*.scss")
-        .pipe(dest("tests/cache/core"));
-    }
+  // Compile via Browserify.
+  function browserifyScripts() {
+    return browserify("tests/cache/h2-temp-component-" + component + ".js")
+    .bundle()
+    .pipe(source("h2-component-" + component + ".js"))
+    .pipe(dest("tests/cache"));
+  }
 
-    // Move the component partial from dev to the server cache.
-    function moveDevComponentPartialSass() {
-        return src("src/styles/_" + component + ".scss")
-        .pipe(dest("tests/cache"));
-    }
+  // Remove the temp file.
+  function cleanScripts() {
+    return del("tests/cache/h2-temp-component-" + component + ".js");
+  }
 
-    // Move the component Sass from dev to the server cache.
-    function moveDevComponentSass() {
-        return src("src/styles/h2-version-" + component + ".scss")
-        .pipe(replace("$H2VER", "0-0-0"))
-        .pipe(rename(function(path) {
-            path.basename = "h2-" + component + "";
-        }))
-        .pipe(dest("tests/cache"));
-    }
+  // Create the task series.
+  const makeScripts = series(
+    transpileScripts,
+    browserifyScripts,
+    cleanScripts
+  );
 
-    // Compile the cached Sass into CSS.
-    function compileDevSass() {
-        return src("tests/cache/h2-" + component + ".scss")
-        .pipe(sass())
-        .pipe(postcss([autoprefixer()]))
-        .pipe(dest("tests/cache"));
-    }
+// Move and compile Sass.
 
-// Utility Tasks
+  // Move the core system Sass from the module to the server cache.
+  function importCoreSass() {
+    return src("node_modules/@hydrogen-design-system/core/dist/system/styles/*.scss")
+    .pipe(dest("tests/cache/core"));
+  }
 
-    // Reset the server cache before a new build.
-    function cleanCache() {
-        return del("tests/cache/**/*")
-    }
+  // Move the component Sass from dev to the server cache.
+  function moveComponentSass() {
+    return src("src/styles/_component-" + component + ".scss")
+    .pipe(dest("tests/cache"));
+  }
+
+  // Move the versioned Sass from dev to the server cache.
+  function moveVersionSass() {
+    return src("src/styles/h2-version-component-" + component + ".scss")
+    .pipe(replace("_VERSION", "-" + version))
+    .pipe(rename(function(path) {
+      path.basename = "h2-component-" + component + "";
+    }))
+    .pipe(dest("tests/cache"));
+  }
+
+  // Compile the cached Sass into CSS.
+  function compileSass() {
+    return src("tests/cache/h2-component-" + component + ".scss")
+    .pipe(sass())
+    .pipe(postcss([autoprefixer()]))
+    .pipe(dest("tests/cache"));
+  }
+
+  // Create the task series.
+  const makeSass = series(
+    importCoreSass,
+    moveComponentSass,
+    moveVersionSass,
+    compileSass
+  );
+
+// Set utility scripts.
+
+  // Reset the server cache before a new build.
+  function cleanCache() {
+    return del("tests/cache/**/*")
+  }
 
 // Dev Prep Task
-const devPrep = series(cleanCache, moveDevMarkup, moveDevComponentScripts, moveDevCash, moveDevCoreSass, moveDevComponentPartialSass, moveDevComponentSass, compileDevSass);
+const dev = series(
+  cleanCache, 
+  makeMarkup,
+  makeScripts,
+  makeSass
+);
 
-// Live Reload
+// Set up Browser-sync and live reloading.
 
-    // Initialize Browsersync.
-    function browserSync(done) {
-        browsersync.init({
-            server: {
-                baseDir: "tests/cache"
-            },
-        });
-        done();
-    }
+  // Initialize Browser-sync.
+  function browserSync(done) {
+    browsersync.init({
+      server: {
+        baseDir: "tests/cache"
+      },
+    });
+    done();
+  }
 
-    // Set up Browsersync page reloading.
-    function browserSyncReload(done) {
-        return src("tests/cache/*.html")
-        .pipe(browsersync.reload({
-            stream: true
-        }));
-    }
+  // Set up Browser-sync page reloading.
+  function browserSyncReload(done) {
+    return src("tests/cache/*.html")
+    .pipe(browsersync.reload({
+      stream: true
+    }));
+  }
 
-    // Watch dev and test files for changes.
-    function watchDevFiles() {
-        watch(["src/**/*", "tests/*.html"], series(devPrep, browserSyncReload));
-    }
+  // Watch dev and test files for changes.
+  function watchDevFiles() {
+    watch(["src/**/*", "tests/*.html"], series(dev, browserSyncReload));
+  }
 
-// Exports
+// Export development scripts.
 
-    // gulp dev
-    exports.exportDev = series(devPrep, parallel(browserSync, watchDevFiles));
+  // gulp dev
+  exports.exportDev = series(dev, parallel(browserSync, watchDevFiles));

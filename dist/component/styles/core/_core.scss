@@ -1,0 +1,167 @@
+// Hydrogen / Core Styles
+
+@forward "defaults";
+@use "defaults" as *;
+@use "maps" as *;
+@use "functions" as *;
+
+// Body-specific Style Reset
+@mixin h2-body-style {
+    margin: 0; // Resets the default 8px value.
+    max-width: 100%;
+    min-height: 100vh;
+    position: relative;
+    width: 100%;
+    // IE 11 Hover Support
+    &[id*="Trident/7.0"] {
+        a:hover {
+            color: $hover-font-color !important;
+            transition: color .2s ease;
+        }
+    }
+}
+
+// Universal Style Reset
+@mixin h2-universal-reset {
+
+    * {
+        box-sizing: border-box;
+    }
+
+    // Text Selection
+    ::selection {
+        background: $selection-bg-color !important;
+        color: contrasting-color($selection-bg-color, $white, $black) !important;
+    }
+
+    // Margin Resets
+    blockquote,
+    dl,
+    fieldset,
+    figure {
+        margin: 0;
+    }
+
+    // Max Image Widths
+    img,
+    iframe {
+        max-width: 100%;
+    }
+
+    // Hydrogen-specific Toggles
+    .h2-active-block {
+        display: block;
+    }
+    .h2-active-inline {
+        display: inline;
+    }
+    .h2-active-inline-block {
+        display: inline-block;
+    }
+    .h2-hidden {
+        display: none;
+    }
+    .h2-mobile-lock {
+        overflow: hidden;
+        @media #{$mq-medium} {
+            overflow: visible;
+        }
+    }
+
+    // Headings
+    h1, h2, h3, h4, h5, h6, p {
+        font-family: $font-default;
+        font-weight: normal;
+        line-height: $line-height;
+        margin: 0
+    }
+    h1 {
+        font-size: $font-scale-h1;
+    }
+    h2 {
+        font-size: $font-scale-h2;
+    }
+    h3 {
+        font-size: $font-scale-h3;
+    }
+    h4 {
+        font-size: $font-scale-h4;
+    }
+    h5 {
+        font-size: $font-scale-h5;
+    }
+    h6 {
+        font-size: $font-scale-h6;
+    }
+
+    // Copy
+    p, div {
+        font-size: $font-scale-default
+    }
+    span {
+        color: inherit;
+        font-family: inherit;
+        font-size: inherit;
+        font-weight: inherit;
+        line-height: $line-height;
+    }
+
+    // Styled Typography
+    em {
+        color: inherit;
+        font-family: inherit;
+        font-size: inherit;
+        font-style: italic;
+        line-height: $line-height;
+    }
+    strong {
+        color: inherit;
+        font-family: inherit;
+        font-size: inherit;
+        font-weight: 600;
+        line-height: $line-height;
+    }
+
+    // Anchors
+    a {
+        color: inherit;
+        font-family: inherit;
+        font-size: inherit;
+        font-weight: inherit;
+        line-height: $line-height;
+        text-decoration: underline;
+        transition: color .2s ease;
+        @media (hover: hover) {
+            &:hover {
+                color: $hover-font-color !important;
+                transition: color .2s ease;
+            }
+        }
+    }
+
+    // Lists
+    ul,
+    ol {
+        font-family: $font-default;
+        padding-left: calc(#{$padding} * 2);
+        li {
+            color: inherit;
+            font-family: inherit;
+            font-size: inherit;
+            line-height: $line-height;
+            margin-bottom: calc(#{$margin} / 2);
+            &:last-child {
+                margin-bottom: 0;
+            }
+            >ul {
+                margin-top: calc(#{$margin} / 2);
+            }
+        }
+    }
+
+    [data-h2-focus]:focus {
+        box-shadow: -1px -1px 0 $focus-color, 0 -1px 0 $focus-color, 1px -1px 0 $focus-color, 1px 0 0 $focus-color, 1px 1px 0 $focus-color, 0 1px 0 $focus-color, -1px 1px 0 $focus-color, -1px 0 0 $focus-color;
+        outline: none;
+    }
+
+}
