@@ -25,7 +25,7 @@ var json = JSON.parse(fs.readFileSync('./package.json'));
 // Set component and version variables.
 const component = json.component;
 const version = json.version.replace(/\./g, "");
-const componentVersion = "[data-h2-" + component + "-" + version + "]";
+const componentVersion = "data-h2-" + component + "-" + version;
 
 // Move and prepare the HTML.
 
@@ -44,7 +44,7 @@ const componentVersion = "[data-h2-" + component + "-" + version + "]";
   // Transpile via Babel.
   function transpileScripts() {
     return src("src/scripts/h2-component-" + component + ".js")
-    .pipe(replace("[data-h2-" + component + "_VERSION]", componentVersion))
+    .pipe(replace("data-h2-" + component + "_VERSION", componentVersion))
     .pipe(replace("_VERSION", version))
     .pipe(babel({
       presets: ['@babel/env']

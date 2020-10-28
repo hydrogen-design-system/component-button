@@ -27,7 +27,7 @@ var json = JSON.parse(fs.readFileSync('./package.json'));
 // Set component and version variables.
 const component = json.component;
 const version = json.version.replace(/\./g, "");
-const componentVersion = "[data-h2-" + component + "-" + version + "]";
+const componentVersion = "data-h2-" + component + "-" + version;
 
 // System Files
 // These scripts prepare the component so that it can be properly imported and process by Hydrogen's system repository.
@@ -37,7 +37,7 @@ const componentVersion = "[data-h2-" + component + "-" + version + "]";
   // Move component scripts untouched.
   function moveSystemScripts() {
   return src("src/scripts/h2-component-" + component + ".js")
-    .pipe(replace("[data-h2-component-" + component + "_VERSION]", "[data-h2-" + component + "]"))
+    .pipe(replace("data-h2-component-" + component + "_VERSION", "data-h2-" + component))
     .pipe(replace("_VERSION", ""))
     .pipe(dest("dist/system/scripts"));
   }
@@ -146,7 +146,7 @@ const componentVersion = "[data-h2-" + component + "-" + version + "]";
     // Move standard scripts.
     function moveCollectionScript() {
       return src("src/scripts/h2-component-" + component + ".js")
-      .pipe(replace("[data-h2-" + component + "_VERSION]", "[data-h2-" + component + "]"))
+      .pipe(replace("data-h2-" + component + "_VERSION", "data-h2-" + component))
       .pipe(replace("_VERSION", ""))
       .pipe(rename(function(path) {
         path.basename = "h2-component-" + component + "-module";
@@ -155,7 +155,7 @@ const componentVersion = "[data-h2-" + component + "-" + version + "]";
     }
     function moveCollectionVersionedScript() {
       return src("src/scripts/h2-component-" + component + ".js")
-      .pipe(replace("[data-h2-" + component + "_VERSION]", componentVersion))
+      .pipe(replace("data-h2-" + component + "_VERSION", componentVersion))
       .pipe(replace("_VERSION", version))
       .pipe(rename(function(path) {
         path.basename = "h2-component-" + component + "-module";
