@@ -55,14 +55,14 @@ $border-radius-round: 5px !default;
         $font-scale: 1.333 !default;
         // Standard Copy
         $font-scale-default: 1rem !default;
-        $font-scale-small: calc(#{$font-scale-default}/(#{$font-scale})) !default;
+        $font-scale-small: calc(#{$font-scale-default}/#{$font-scale}) !default;
         // Headings
         $font-scale-h6: $font-scale-default !default;
-        $font-scale-h5: calc(#{$font-scale-default}*(#{$font-scale})) !default;
-        $font-scale-h4: calc(#{$font-scale-h5}*(#{$font-scale})) !default;
-        $font-scale-h3: calc(#{$font-scale-h4}*(#{$font-scale})) !default;
-        $font-scale-h2: calc(#{$font-scale-h3}*(#{$font-scale})) !default;
-        $font-scale-h1: calc(#{$font-scale-h2}*(#{$font-scale})) !default;
+        $font-scale-h5: calc(#{$font-scale-default}*#{$font-scale}) !default;
+        $font-scale-h4: calc(#{$font-scale-h5}*#{$font-scale}) !default;
+        $font-scale-h3: calc(#{$font-scale-h4}*#{$font-scale}) !default;
+        $font-scale-h2: calc(#{$font-scale-h3}*#{$font-scale}) !default;
+        $font-scale-h1: calc(#{$font-scale-h2}*#{$font-scale}) !default;
 
     // Headings
 

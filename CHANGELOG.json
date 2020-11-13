@@ -1,0 +1,25 @@
+{
+  "majors": [
+    {
+      "release": 0,
+      "changes": [],
+      "minors": [
+        {
+          "release": 0,
+          "changes": [],
+          "patches": [
+            {
+              "release": 9,
+              "changes": [
+                "Updates the H2 core from 0.0.34 => 0.0.37.",
+                "Updates the development and production tasks to include Babel, allowing for the component to be imported as a module or browser-ready JavaScript.",
+                "Migrates away from $H2VER, $H2VERJS, and $H2VERCSS to a standardized _VERSION signifier for the build scripts.",
+                "Migrates the component to use vanilla JavaScript over Cash."
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

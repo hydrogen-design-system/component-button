@@ -57,19 +57,19 @@
   margin: 0;
 }
 [data-h2-button] h1 {
-  font-size: calc(calc(calc(calc(calc(1rem*(1.333))*(1.333))*(1.333))*(1.333))*(1.333));
+  font-size: calc(calc(calc(calc(calc(1rem*1.333)*1.333)*1.333)*1.333)*1.333);
 }
 [data-h2-button] h2 {
-  font-size: calc(calc(calc(calc(1rem*(1.333))*(1.333))*(1.333))*(1.333));
+  font-size: calc(calc(calc(calc(1rem*1.333)*1.333)*1.333)*1.333);
 }
 [data-h2-button] h3 {
-  font-size: calc(calc(calc(1rem*(1.333))*(1.333))*(1.333));
+  font-size: calc(calc(calc(1rem*1.333)*1.333)*1.333);
 }
 [data-h2-button] h4 {
-  font-size: calc(calc(1rem*(1.333))*(1.333));
+  font-size: calc(calc(1rem*1.333)*1.333);
 }
 [data-h2-button] h5 {
-  font-size: calc(1rem*(1.333));
+  font-size: calc(1rem*1.333);
 }
 [data-h2-button] h6 {
   font-size: 1rem;
@@ -116,7 +116,8 @@
 [data-h2-button] ul,
 [data-h2-button] ol {
   font-family: sans-serif;
-  padding-left: calc(1.5rem * 2);
+  margin: 0;
+  padding-left: 1.5rem;
 }
 [data-h2-button] ul li,
 [data-h2-button] ol li {
@@ -285,7 +286,7 @@ a[data-h2-button*=circle] {
 
 [data-h2-button*=small],
 a[data-h2-button*=small] {
-  font-size: calc(1rem/(1.333));
+  font-size: calc(1rem/1.333);
   padding: calc((1.5rem / 2) * .5) calc(1.5rem / 2);
 }
 
@@ -297,7 +298,7 @@ a[data-h2-button*=medium] {
 
 [data-h2-button*=large],
 a[data-h2-button*=large] {
-  font-size: calc(1rem*(1.333));
+  font-size: calc(1rem*1.333);
   padding: calc((1.5rem * 1.5) * .5) calc(1.5rem * 1.5);
 }
 

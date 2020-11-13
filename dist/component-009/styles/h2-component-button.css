@@ -57,19 +57,19 @@
   margin: 0;
 }
 [data-h2-button-009] h1 {
-  font-size: calc(calc(calc(calc(calc(1rem*(1.333))*(1.333))*(1.333))*(1.333))*(1.333));
+  font-size: calc(calc(calc(calc(calc(1rem*1.333)*1.333)*1.333)*1.333)*1.333);
 }
 [data-h2-button-009] h2 {
-  font-size: calc(calc(calc(calc(1rem*(1.333))*(1.333))*(1.333))*(1.333));
+  font-size: calc(calc(calc(calc(1rem*1.333)*1.333)*1.333)*1.333);
 }
 [data-h2-button-009] h3 {
-  font-size: calc(calc(calc(1rem*(1.333))*(1.333))*(1.333));
+  font-size: calc(calc(calc(1rem*1.333)*1.333)*1.333);
 }
 [data-h2-button-009] h4 {
-  font-size: calc(calc(1rem*(1.333))*(1.333));
+  font-size: calc(calc(1rem*1.333)*1.333);
 }
 [data-h2-button-009] h5 {
-  font-size: calc(1rem*(1.333));
+  font-size: calc(1rem*1.333);
 }
 [data-h2-button-009] h6 {
   font-size: 1rem;
@@ -116,7 +116,8 @@
 [data-h2-button-009] ul,
 [data-h2-button-009] ol {
   font-family: sans-serif;
-  padding-left: calc(1.5rem * 2);
+  margin: 0;
+  padding-left: 1.5rem;
 }
 [data-h2-button-009] ul li,
 [data-h2-button-009] ol li {
@@ -285,7 +286,7 @@ a[data-h2-button-009*=circle] {
 
 [data-h2-button-009*=small],
 a[data-h2-button-009*=small] {
-  font-size: calc(1rem/(1.333));
+  font-size: calc(1rem/1.333);
   padding: calc((1.5rem / 2) * .5) calc(1.5rem / 2);
 }
 
@@ -297,7 +298,7 @@ a[data-h2-button-009*=medium] {
 
 [data-h2-button-009*=large],
 a[data-h2-button-009*=large] {
-  font-size: calc(1rem*(1.333));
+  font-size: calc(1rem*1.333);
   padding: calc((1.5rem * 1.5) * .5) calc(1.5rem * 1.5);
 }
 

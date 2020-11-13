@@ -78,11 +78,7 @@ $grid-alignment-map: (
     "top": "flex-start",
     "middle": "center",
     "bottom": "flex-end",
-);
-
-$grid-equality-map: (
-    "auto": "auto",
-    "equal": "equal",
+    "stretch": "stretch"
 );
 
 // Media

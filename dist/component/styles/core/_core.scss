@@ -143,7 +143,8 @@
     ul,
     ol {
         font-family: $font-default;
-        padding-left: calc(#{$padding} * 2);
+        margin: 0;
+        padding-left: $padding;
         li {
             color: inherit;
             font-family: inherit;
