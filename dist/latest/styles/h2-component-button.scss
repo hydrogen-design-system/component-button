@@ -1,37 +1,34 @@
-// Hydrogen / Components / Button (System)
-// This file is processed and then imported into @hydrogen-design-system/system
+// Hydrogen / Components / Button (Versioned)
+// This file is processed and built so that the component can be used as an isolated, versioned tool.
 
-// File paths must respect how the system's architecture works.
-//  - root
-//    - core
-//      - styles
-//    - properties
-//      - styles
-//      - individual properties
-//        - styles
-//    - components
-//      - individual components
-//        - styles
-//          - [you're here]
-// Unlike the versioned copy, this stylesheet doesn't require Hydrogen's core because the core is imported by the system itself in that repository later on.
+// This file is compiled after it's been moved by the Gulp build script because the idea is that you can load the Sass from the versioned node_module OR simply use the compiled CSS if you don't care about themeing the component through Hydrogen.
 
-// Forward theme variables from the core module first so that they can be accessed and modified.
-@forward "../../../core/defaults";
+// Forward the theme variables from the processed, nested core files.
+@forward "core/defaults";
 
 // Load map variables from the core module so that the component can leverage them when generating selectors.
-@use "../../../core/maps" as maps;
+@use "core/maps" as maps;
 
 // Load functions from the core module so that the component can leverage them when generating selectors.
-@use "../../../core/functions" as fn;
+@use "core/functions" as fn;
 
-// Load theme variables from the core module so that they can be passed to the component mixins.
-@use "../../../core/defaults" as var;
+// Load the theme variables from the nested core files so that they can be passed to property mixins.
+@use "core/defaults" as var;
 
-// Load the component so that its mixins can be accessed.
+// Load the core itself so that its mixins can be accessed and subsequently nested inside the component attribute (this prevents the core from being loaded on the project outside of places it should be).
+@use "core/core" as core;
+
+// // Load the component so that its mixins can be accessed.
 @use "component-button" as *;
 
-// Load the generic button mixin with its respective theme variables.
+// Load the core and component mixins within the versioned component attribute, while passing them their respective theme variables.
+//  is replaced during the Gulp build script with the current component version, set in Gulpfile.js, before Sass is compiled.
 [data-h2-button] {
+  // Load the component's unique reset styles.
+  @include h2-component-button-reset();
+  // Load the core.
+  @include core.h2-universal-reset;
+  // Load the generic component mixin.
   @include h2-component-button-generic(
     $font-default: var.$font-default,
     $focus-color: var.$focus-color, 

@@ -1,0 +1,37 @@
+// Hydrogen / Sass Functions
+
+@function squareRoot ($h2-r) {
+  $h2-x0: 1;
+  $h2-x1: $h2-x0;
+
+  @for $h2-i from 1 through 10 {
+    $h2-x1: $h2-x0 - ($h2-x0 * $h2-x0 - abs($h2-r)) / (2 * $h2-x0);
+    $h2-x0: $h2-x1;
+  }
+
+  @return $h2-x1;
+}
+
+$h2-red-magic-number: 241;
+$h2-green-magic-number: 691;
+$h2-blue-magic-number: 68;
+$h2-brightness-divisor: $h2-red-magic-number + $h2-green-magic-number + $h2-blue-magic-number;
+
+@function brightness($h2-color) {
+  // Extract color components
+  $h2-red-component: red($h2-color);
+  $h2-green-component: green($h2-color);
+  $h2-blue-component: blue($h2-color);
+  // Calculate a brightness value in 3d color space between 0 and 255
+  $h2-number: squareRoot((($h2-red-component * $h2-red-component * $h2-red-magic-number) + ($h2-green-component * $h2-green-component * $h2-green-magic-number) + ($h2-blue-component * $h2-blue-component * $h2-blue-magic-number)) / $h2-brightness-divisor);
+  // Convert to percentage and return
+  @return 100% * $h2-number / 255;
+}
+
+@function contrasting-color($h2-color, $h2-light, $h2-dark) {
+  @if brightness($h2-color) < 65% {
+    @return $h2-light;
+  } @else {
+    @return $h2-dark;
+  }
+}

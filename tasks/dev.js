@@ -79,7 +79,7 @@ const componentVersion = "data-h2-" + component + "-" + version;
 
   // Move the core system Sass from the module to the server cache.
   function importCoreSass() {
-    return src("node_modules/@hydrogen-design-system/core/dist/system/styles/*.scss")
+    return src("node_modules/@hydrogen-design-system/core/dist/latest/styles/*.scss")
     .pipe(dest("tests/cache/core"));
   }
 

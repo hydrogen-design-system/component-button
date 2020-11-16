@@ -16,6 +16,14 @@
                 "Migrates away from $H2VER, $H2VERJS, and $H2VERCSS to a standardized _VERSION signifier for the build scripts.",
                 "Migrates the component to use vanilla JavaScript over Cash."
               ]
+            },
+            {
+              "release": 10,
+              "changes": [
+                "Updates the H2 core from 0.0.37 => 0.0.38.",
+                "Reconfigures the build script to output into a new folder layout containing the version and latest code in matching structures.",
+                "Removes the init script as it's no longer needed."
+              ]
             }
           ]
         }

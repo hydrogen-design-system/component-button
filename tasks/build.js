@@ -27,329 +27,280 @@ var json = JSON.parse(fs.readFileSync('./package.json'));
 // Set component and version variables.
 const component = json.component;
 const version = json.version.replace(/\./g, "");
+const componentPath = "h2-component-" + component;
 const componentVersion = "data-h2-" + component + "-" + version;
 
-// System Files
-// These scripts prepare the component so that it can be properly imported and process by Hydrogen's system repository.
+// Markup
 
-  // Move, transpile, and compile JavaScript.
-
-  // Move component scripts untouched.
-  function moveSystemScripts() {
-  return src("src/scripts/h2-component-" + component + ".js")
-    .pipe(replace("data-h2-component-" + component + "_VERSION", "data-h2-" + component))
+  // Latest
+  function prepLatestMarkup() {
+    return src([
+      "src/markup/**/*.html",
+      "src/markup/**/*.twig"
+    ])
     .pipe(replace("_VERSION", ""))
-    .pipe(dest("dist/system/scripts"));
+    .pipe(dest("dist/latest/markup"));
   }
 
-  // Move Sass files.
+  // Current Version
+  function prepVersionMarkup() {
+    return src([
+      "src/markup/**/*.html",
+      "src/markup/**/*.twig"
+    ])
+    .pipe(replace("_VERSION", "-" + version))
+    .pipe(dest("dist/" + version + "/markup"));
+  }
 
-    // Move the component Sass from dev to dist.
-    function moveSystemComponentSass() {
-      return src("src/styles/_component-" + component + ".scss")
-      .pipe(dest("dist/system/styles"));
-    }
+// Scripts
 
-    // Move the system Sass from dev to dist.
-    function moveSystemSass() {
-      return src("src/styles/h2-system-component-" + component + ".scss")
-      .pipe(rename(function(path) {
-        path.basename = "h2-component-" + component + "";
-      }))
-      .pipe(dest("dist/system/styles"));
-    }
+  // Latest
 
-  // Create the task series.
-  const makeSystem = series(
-    moveSystemScripts,
-    moveSystemComponentSass,
-    moveSystemSass
-  );
-
-// Collections
-// These scripts prepare the component so that its markup, styles, and scripts are ready to be imported individually, categorized by language support.
-
-  // Markup
-
-    // HTML
-
-      // Move standard markup.
-      function moveCollectionHTML() {
-        return src("src/markup/html/**/*.html")
-        .pipe(replace("_VERSION", ""))
-        .pipe(dest("dist/component/markup/html"));
-      }
-
-      // Move versioned markup.
-      function moveCollectionVersionedHTML() {
-        return src("src/markup/html/**/*.html")
-        .pipe(replace("_VERSION", "-" + version))
-        .pipe(dest("dist/component-" + version + "/markup/html"));
-      }
-
-      // Create the task series.
-      const makeHTML = series(
-        moveCollectionHTML,
-        moveCollectionVersionedHTML
-      );
-
-    // PHP / Twig
-
-      // Move standard markup.
-      function moveCollectionTwig() {
-        return src("src/markup/twig/**/*.twig")
-        .pipe(replace("_VERSION", ""))
-        .pipe(dest("dist/component/markup/twig"));
-      }
-
-      // Move versioned markup.
-      function moveCollectionVersionedTwig() {
-        return src("src/markup/twig/**/*.twig")
-        .pipe(replace("_VERSION", "-" + version))
-        .pipe(dest("dist/component-" + version + "/markup/twig"));
-      }
-
-      // Create the task series.
-      const makeTwig = series(
-        moveCollectionTwig,
-        moveCollectionVersionedTwig
-      );
-
-    // JS / React
-
-      // Move markup and versioned markup.
-      // function prodCollectionReactMarkup() {
-      //   return src("src/markup/react/**/*.js")
-      //   .pipe(replace("[data-h2-component-" + component + "_VERSION]", "[data-h2-" + component + "]"))
-      //   .pipe(replace("_VERSION", ""))
-      //   .pipe(dest("dist/collections/react"));
-      // }
-      // function prodCollectionVersionedReactMarkup() {
-      //   return src("src/markup/react/**/*.js")
-      //   .pipe(replace("[data-h2-component-" + component + "_VERSION]", componentVersion))
-      //   .pipe(replace("_VERSION", version))
-      //   .pipe(dest("dist/collections/react"));
-      // }
-
-      // Move, compile, minify, and GZIP Sass and versioned Sass.
-
-      // Move, transpile, compile, minify, and GZIP JavaScript and versioned JavaScript.
-
-      // Create the task series.
-      // const makeReact = series(
-      //   prodCollectionReactMarkup,
-      //   prodCollectionVersionedReactMarkup
-      // );
-
-  // Compile JavaScript
-
-    // Move standard scripts.
-    function moveCollectionScript() {
-      return src("src/scripts/h2-component-" + component + ".js")
+    // Copy the script as is.
+    function copyLatestScript() {
+      return src("src/scripts/**/*.js")
       .pipe(replace("data-h2-" + component + "_VERSION", "data-h2-" + component))
       .pipe(replace("_VERSION", ""))
       .pipe(rename(function(path) {
-        path.basename = "h2-component-" + component + "-module";
+        path.basename = componentPath + ".module";
       }))
-      .pipe(dest("dist/component/scripts"));
+      .pipe(dest("dist/latest/scripts"))
     }
-    function moveCollectionVersionedScript() {
-      return src("src/scripts/h2-component-" + component + ".js")
+
+    // Use Babel to convert the script.
+    function transpileLatestScript() {
+      return src("dist/latest/scripts/" + componentPath + ".module.js")
+      .pipe(babel({
+        presets: ['@babel/env']
+      }))
+      .pipe(rename(function(path) {
+        path.basename = componentPath + ".babel";
+      }))
+      .pipe(dest("dist/latest/scripts"));
+    }
+
+    // Use Browserify to compile the script into browser-ready code.
+    function compileLatestScript() {
+      return browserify("dist/latest/scripts/" + componentPath + ".babel.js")
+      .bundle()
+      .pipe(source(componentPath + ".js"))
+      .pipe(dest("dist/latest/scripts"));
+    }
+
+    // Minify the script.
+    function minifyLatestScript() {
+      return src("dist/latest/scripts/" + componentPath + ".js")
+      .pipe(uglify())
+      .pipe(rename(function(path) {
+        path.extname = ".min.js";
+      }))
+      .pipe(dest("dist/latest/scripts"));
+    }
+
+    // Gzip the script.
+    function gzipLatestScript() {
+      return src("dist/latest/scripts/" + componentPath + ".min.js")
+      .pipe(gzip())
+      .pipe(dest("dist/latest/scripts"));
+    }
+
+    // Export the a task series.
+    const prepLatestScripts = series(
+      copyLatestScript,
+      transpileLatestScript,
+      compileLatestScript,
+      minifyLatestScript,
+      gzipLatestScript
+    );
+
+  // Current Version
+
+    // Copy the script as is.
+    function copyVersionScript() {
+      return src("src/scripts/**/*.js")
       .pipe(replace("data-h2-" + component + "_VERSION", componentVersion))
       .pipe(replace("_VERSION", version))
       .pipe(rename(function(path) {
-        path.basename = "h2-component-" + component + "-module";
+        path.basename = componentPath + ".module";
       }))
-      .pipe(dest("dist/component-" + version + "/scripts"));
+      .pipe(dest("dist/" + version + "/scripts"))
     }
 
-    // Transpile with Babel to a temporary file that can be compiled.
-    function transpileCollectionScript() {
-      return src("dist/component/scripts/h2-component-" + component + "-module.js")
+    // Use Babel to convert the script.
+    function transpileVersionScript() {
+      return src("dist/" + version + "/scripts/" + componentPath + ".module.js")
       .pipe(babel({
         presets: ['@babel/env']
       }))
       .pipe(rename(function(path) {
-        path.basename = "h2-temp-component-" + component + "";
+        path.basename = componentPath + ".babel";
       }))
-      .pipe(dest("dist/component/scripts"));
-    }
-    function transpileCollectionVersionedScript() {
-      return src("dist/component-" + version + "/scripts/h2-component-" + component + "-module.js")
-      .pipe(babel({
-        presets: ['@babel/env']
-      }))
-      .pipe(rename(function(path) {
-        path.basename = "h2-temp-component-" + component + "";
-      }))
-      .pipe(dest("dist/component-" + version + "/scripts"));
+      .pipe(dest("dist/" + version + "/scripts"));
     }
 
-    // Compile the temporary file to browser-ready scripts with Browserify.
-    function compileCollectionScript() {
-      return browserify("dist/component/scripts/h2-temp-component-" + component + ".js")
+    // Use Browserify to compile the script into browser-ready code.
+    function compileVersionScript() {
+      return browserify("dist/" + version + "/scripts/" + componentPath + ".babel.js")
       .bundle()
-      .pipe(source("h2-component-" + component + ".js"))
-      .pipe(dest("dist/component/scripts"));
-    }
-    function compileCollectionVersionedScript() {
-      return browserify("dist/component-" + version + "/scripts/h2-temp-component-" + component + ".js")
-      .bundle()
-      .pipe(source("h2-component-" + component + ".js"))
-      .pipe(dest("dist/component-" + version + "/scripts"));
+      .pipe(source(componentPath + ".js"))
+      .pipe(dest("dist/" + version + "/scripts"));
     }
 
-    // Remove the temp file.
-    function cleanCollectionScripts() {
-      return del([
-        "dist/component/scripts/h2-temp-component-" + component + ".js",
-        "dist/component-" + version + "/scripts/h2-temp-component-" + component + ".js"
-      ]);
-    }
-
-    // Minify
-    function minifyCollectionScript() {
-      return src("dist/component/scripts/h2-component-" + component + ".js")
+    // Minify the script.
+    function minifyVersionScript() {
+      return src("dist/" + version + "/scripts/" + componentPath + ".js")
       .pipe(uglify())
       .pipe(rename(function(path) {
         path.extname = ".min.js";
       }))
-      .pipe(dest("dist/component/scripts"));
-    }
-    function minifyCollectionVersionedScript() {
-      return src("dist/component-" + version + "/scripts/h2-component-" + component + ".js")
-      .pipe(uglify())
-      .pipe(rename(function(path) {
-        path.extname = ".min.js";
-      }))
-      .pipe(dest("dist/component-" + version + "/scripts"));
+      .pipe(dest("dist/" + version + "/scripts"));
     }
 
-    // GZIP
-    function gzipCollectionScript() {
-      return src("dist/component/scripts/h2-component-" + component + ".min.js")
+    // Gzip the script.
+    function gzipVersionScript() {
+      return src("dist/" + version + "/scripts/" + componentPath + ".min.js")
       .pipe(gzip())
-      .pipe(dest("dist/component/scripts"));
-    }
-    function gzipCollectionVersionedScript() {
-      return src("dist/component-" + version + "/scripts/h2-component-" + component + ".min.js")
-      .pipe(gzip())
-      .pipe(dest("dist/component-" + version + "/scripts"));
+      .pipe(dest("dist/" + version + "/scripts"));
     }
 
-    // Create the task series.
-    const makeScripts = series(
-      moveCollectionScript,
-      moveCollectionVersionedScript,
-      transpileCollectionScript,
-      transpileCollectionVersionedScript,
-      compileCollectionScript,
-      compileCollectionVersionedScript,
-      cleanCollectionScripts,
-      minifyCollectionScript,
-      minifyCollectionVersionedScript,
-      gzipCollectionScript,
-      gzipCollectionVersionedScript
+    // Export the a task series.
+    const prepVersionScripts = series(
+      copyVersionScript,
+      transpileVersionScript,
+      compileVersionScript,
+      minifyVersionScript,
+      gzipVersionScript
     );
 
-  // Compile Sass
+// Styles
 
-    // Import the core Sass into the component.
-    function importCoreSass() {
-      return src("node_modules/@hydrogen-design-system/core/dist/system/styles/*.scss")
-      .pipe(dest("dist/component/styles/core"));
-    }
-    function importVersionedCoreSass() {
-      return src("node_modules/@hydrogen-design-system/core/dist/system/styles/*.scss")
-      .pipe(dest("dist/component-" + version + "/styles/core"));
+  // Latest
+
+    // Import H2's core styles into the component.
+    function importLatestCoreSass() {
+      return src("node_modules/@hydrogen-design-system/core/dist/latest/styles/**/*.scss")
+      .pipe(dest("dist/latest/styles/core"));
     }
 
-    // Move the component Sass from dev to dist.
-    function moveCollectionComponentSass() {
+    // Copy the primary component styles.
+    function copyLatestPrimarySass() {
       return src("src/styles/_component-" + component + ".scss")
-      .pipe(dest("dist/component/styles"));
-    }
-    function moveCollectionVersionedComponentSass() {
-      return src("src/styles/_component-" + component + ".scss")
-      .pipe(dest("dist/component-" + version + "/styles"));
+      .pipe(dest("dist/latest/styles"));
     }
 
-    // Move the versioned Sass from dev to dist.
-    function moveCollectionSass() {
+    // Copy the import stylesheet.
+    function copyLatestSystemSass() {
+      return src("src/styles/h2-system-component-" + component + ".scss")
+      .pipe(replace("_VERSION", ""))
+      .pipe(rename(function(path) {
+        path.basename = "h2-system-" + component;
+      }))
+      .pipe(dest("dist/latest/styles"));
+    }
+
+    // Copy the version stylesheet for compiling.
+    function copyLatestVersionSass() {
       return src("src/styles/h2-version-component-" + component + ".scss")
       .pipe(replace("_VERSION", ""))
       .pipe(rename(function(path) {
-        path.basename = "h2-component-" + component + "";
+        path.basename = componentPath;
       }))
-      .pipe(dest("dist/component/styles"));
+      .pipe(dest("dist/latest/styles"));
     }
-    function moveCollectionVersionedSass() {
+
+    // Compile the Sass into CSS.
+    function compileLatestSass() {
+      return src("dist/latest/styles/" + componentPath + ".scss")
+      .pipe(sass())
+      .pipe(postcss([autoprefixer()]))
+      .pipe(dest("dist/latest/styles"));
+    }
+
+    // Minify the CSS.
+    function minifyLatestSass() {
+      return src("dist/latest/styles/" + componentPath + ".css")
+      .pipe(postcss([cssnano()]))
+      .pipe(rename(function(path) {
+        path.extname = ".min.css";
+      }))
+      .pipe(dest("dist/latest/styles"));
+    }
+
+    // Gzip the CSS.
+    function gzipLatestSass() {
+      return src("dist/latest/styles/" + componentPath + ".min.css")
+      .pipe(gzip())
+      .pipe(dest("dist/latest/styles"));
+    }
+
+    // Export the task series.
+    const prepLatestSass = series(
+      importLatestCoreSass,
+      copyLatestPrimarySass,
+      copyLatestSystemSass,
+      copyLatestVersionSass,
+      compileLatestSass,
+      minifyLatestSass,
+      gzipLatestSass
+    );
+
+  // Current Version
+
+    // Import H2's core styles into the component.
+    function importVersionCoreSass() {
+      return src("node_modules/@hydrogen-design-system/core/dist/latest/styles/**/*.scss")
+      .pipe(dest("dist/" + version + "/styles/core"));
+    }
+
+    // Copy the primary component styles.
+    function copyVersionPrimarySass() {
+      return src("src/styles/_component-" + component + ".scss")
+      .pipe(dest("dist/" + version + "/styles"));
+    }
+
+    // Copy the version stylesheet for compiling.
+    function copyVersionVersionSass() {
       return src("src/styles/h2-version-component-" + component + ".scss")
       .pipe(replace("_VERSION", "-" + version))
       .pipe(rename(function(path) {
-        path.basename = "h2-component-" + component + "";
+        path.basename = componentPath;
       }))
-      .pipe(dest("dist/component-" + version + "/styles"));
+      .pipe(dest("dist/" + version + "/styles"));
     }
 
-    // Compile
-    function compileCollectionSass() {
-      return src("dist/component/styles/h2-component-" + component + ".scss")
+    // Compile the Sass into CSS.
+    function compileVersionSass() {
+      return src("dist/" + version + "/styles/" + componentPath + ".scss")
       .pipe(sass())
       .pipe(postcss([autoprefixer()]))
-      .pipe(dest("dist/component/styles"));
-    }
-    function compileCollectionVersionedSass() {
-      return src("dist/component-" + version + "/styles/h2-component-" + component + ".scss")
-      .pipe(sass())
-      .pipe(postcss([autoprefixer()]))
-      .pipe(dest("dist/component-" + version + "/styles"));
+      .pipe(dest("dist/" + version + "/styles"));
     }
 
-    // Minify
-    function minifyCollectionSass() {
-      return src("dist/component/styles/h2-component-" + component + ".css")
+    // Minify the CSS.
+    function minifyVersionSass() {
+      return src("dist/" + version + "/styles/" + componentPath + ".css")
       .pipe(postcss([cssnano()]))
       .pipe(rename(function(path) {
         path.extname = ".min.css";
       }))
-      .pipe(dest("dist/component/styles"));
-    }
-    function minifyCollectionVersionedSass() {
-      return src("dist/component-" + version + "/styles/h2-component-" + component + ".css")
-      .pipe(postcss([cssnano()]))
-      .pipe(rename(function(path) {
-        path.extname = ".min.css";
-      }))
-      .pipe(dest("dist/component-" + version + "/styles"));
+      .pipe(dest("dist/" + version + "/styles"));
     }
 
-    // GZIP
-    function gzipCollectionSass() {
-      return src("dist/component/styles/h2-component-" + component + ".min.css")
+    // Gzip the CSS.
+    function gzipVersionSass() {
+      return src("dist/" + version + "/styles/" + componentPath + ".min.css")
       .pipe(gzip())
-      .pipe(dest("dist/component/styles"));
-    }
-    function gzipCollectionVersionedSass() {
-      return src("dist/component-" + version + "/styles/h2-component-" + component + ".min.css")
-      .pipe(gzip())
-      .pipe(dest("dist/component-" + version + "/styles"));
+      .pipe(dest("dist/" + version + "/styles"));
     }
 
-    // Create the task series.
-    const makeSass = series(
-      importCoreSass,
-      importVersionedCoreSass,
-      moveCollectionComponentSass,
-      moveCollectionVersionedComponentSass,
-      moveCollectionSass,
-      moveCollectionVersionedSass,
-      compileCollectionSass,
-      compileCollectionVersionedSass,
-      minifyCollectionSass,
-      minifyCollectionVersionedSass,
-      gzipCollectionSass,
-      gzipCollectionVersionedSass
+    // Export the task series.
+    const prepVersionSass = series(
+      importVersionCoreSass,
+      copyVersionPrimarySass,
+      copyVersionVersionSass,
+      compileVersionSass,
+      minifyVersionSass,
+      gzipVersionSass
     );
 
 // Utility Tasks
@@ -362,4 +313,12 @@ const componentVersion = "data-h2-" + component + "-" + version;
 // Exports
 
   // gulp build
-  exports.exportBuild = series(cleanDist, makeSystem, makeHTML, makeTwig, makeScripts, makeSass);
+  exports.exportBuild = series(
+    cleanDist, 
+    prepLatestMarkup, 
+    prepLatestScripts, 
+    prepLatestSass, 
+    prepVersionMarkup, 
+    prepVersionScripts, 
+    prepVersionSass
+  );
