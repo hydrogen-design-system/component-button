@@ -1,0 +1,96 @@
+// Hydrogen / Components / Button (Versioned)
+// This file is processed and built so that the component can be used as an isolated, versioned tool.
+
+// This file is compiled after it's been moved by the Gulp build script because the idea is that you can load the Sass from the versioned node_module OR simply use the compiled CSS if you don't care about themeing the component through Hydrogen.
+
+// Forward the theme variables from the processed, nested core files.
+@forward "core/styles/defaults";
+
+// Load map variables from the core module so that the component can leverage them when generating selectors.
+@use "core/styles/maps" as maps;
+
+// Load functions from the core module so that the component can leverage them when generating selectors.
+@use "core/styles/functions" as fn;
+
+// Load the theme variables from the nested core files so that they can be passed to property mixins.
+@use "core/styles/defaults" as var;
+
+// Load the core itself so that its mixins can be accessed and subsequently nested inside the component attribute (this prevents the core from being loaded on the project outside of places it should be).
+@use "core/styles/core" as core;
+
+// // Load the component so that its mixins can be accessed.
+@use "button" as *;
+
+// Load the core and component mixins within the versioned component attribute, while passing them their respective theme variables.
+// _VERSION is replaced during the Gulp build script with the current component version, set in Gulpfile.js, before Sass is compiled.
+[data-h2-button_VERSION] {
+  // Load the component's unique reset styles.
+  @include h2-component-button-reset();
+  // Load the core.
+  @include core.h2-universal-reset;
+  // Load the generic component mixin.
+  @include h2-component-button-generic(
+    $font-default: var.$font-default,
+    $focus-color: var.$focus-color, 
+    $gray: var.$gray, 
+    $hover-bg-color: var.$hover-bg-color, 
+    $hover-font-color: var.$hover-font-color
+  );
+}
+
+// Load anchor specific button mixin.
+a[data-h2-button_VERSION] {
+  @include h2-component-button-anchor(
+    $font-default: var.$font-default,
+    $focus-color: var.$focus-color
+  );
+}
+
+// Load the color button styles with their respective theme variables.
+@each $colorKey, $colorValue in maps.$color-map {
+  [data-h2-button_VERSION*="#{$colorKey}"],
+  a[data-h2-button_VERSION*="#{$colorKey}"] {
+    @include h2-component-button-color(
+      $color: $colorValue,
+      $gray: var.$gray
+    );
+  }
+}
+// Load the radius button styles with their respective theme variables.
+@each $radiusKey, $radiusValue in maps.$object-radius-map {
+  [data-h2-button_VERSION*="#{$radiusKey}"],
+  a[data-h2-button_VERSION*="#{$radiusKey}"] {
+    @include h2-component-button-radius(
+      $radius: $radiusValue
+    );
+  }
+}
+// Load the size button styles with their respective theme variables.
+@each $sizeKey, $sizeValue in maps.$size-map {
+  [data-h2-button_VERSION*="#{$sizeKey}"],
+  a[data-h2-button_VERSION*="#{$sizeKey}"] {
+    @include h2-component-button-size(
+      $font-small: var.$font-scale-small,
+      $font-medium: var.$font-scale-default,
+      $font-large: var.$font-scale-h5,
+      $padding: var.$padding,
+      $size: $sizeValue
+    );
+  }
+}
+// Load the style button styles with their respective theme variables - the style variations also have color implications, hence the color loop.
+@each $colorKey, $colorValue in maps.$color-map {
+  @each $styleKey, $styleValue in maps.$button-type-map {
+    [data-h2-button_VERSION*="#{$colorKey}"][data-h2-button_VERSION*="#{$styleKey}"],
+    a[data-h2-button_VERSION*="#{$colorKey}"][data-h2-button_VERSION*="#{$styleKey}"] {
+      @include h2-component-button-style(
+        $color: $colorValue,
+        $solid-font-color: fn.contrasting-color($colorValue, var.$white, var.$black),
+        $gray: var.$gray,
+        $hover-bg-color: var.$hover-bg-color,
+        $hover-font-color: var.$hover-font-color,
+        $style: $styleKey
+      );
+    }
+  }
+}

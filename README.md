@@ -39,7 +39,7 @@ You will need:
 `_VERSION` is used by Hydrogen to process the component's files and generate a versioned instance of the component when it is built. Please ensure that all references to the main component's data-attribute have `_VERSION` appended (e.g. data-h2-accordion_VERSION) in the following places:
 - `src/markup`
 - `src/scripts`
-- `src/styles/h2-version-component.scss`
+- `src/styles/instance.scss`
 
 It is also important to use `_VERSION` when creating a function for your component, as the scripts also need to be namespaced in the event a user imports an older version of your component (to prevent conflicting with the newest version). This can be done by creating functions in `src/scripts` that follow a `function myNewFunctionName_VERSION () {}` pattern.
 

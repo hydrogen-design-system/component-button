@@ -27,281 +27,385 @@ var json = JSON.parse(fs.readFileSync('./package.json'));
 // Set component and version variables.
 const component = json.component;
 const version = json.version.replace(/\./g, "");
-const componentPath = "h2-component-" + component;
-const componentVersion = "data-h2-" + component + "-" + version;
+const dataH2ComponentDefault = "data-h2-" + component + "_VERSION";
+const dataH2Component = "data-h2-" + component;
+const dataH2ComponentVersion = "data-h2-" + component + "-" + version;
 
-// Markup
+// Build the system files.
 
-  // Latest
-  function prepLatestMarkup() {
-    return src([
-      "src/markup/**/*.html",
-      "src/markup/**/*.twig"
-    ])
+  // Markup
+  function moveSystemMarkup() {
+    return src("src/markup/**/*")
     .pipe(replace("_VERSION", ""))
-    .pipe(dest("dist/latest/markup"));
+    .pipe(dest("system/markup"))
   }
 
-  // Current Version
-  function prepVersionMarkup() {
+  // Scripts
+  function prepSystemScripts() {
+    return src("src/scripts/module.js")
+    .pipe(replace(dataH2ComponentDefault, dataH2Component))
+    .pipe(replace("_VERSION", ""))
+    .pipe(babel({
+      presets: ['@babel/env']
+    }))
+    .pipe(dest("system/scripts"))
+  }
+
+  // Styles
+  function moveSystemSass() {
     return src([
-      "src/markup/**/*.html",
-      "src/markup/**/*.twig"
+      "src/styles/_" + component + ".scss",
+      "src/styles/system.scss"
     ])
-    .pipe(replace("_VERSION", "-" + version))
-    .pipe(dest("dist/" + version + "/markup"));
+    .pipe(dest("system/styles"))
   }
 
-// Scripts
+  // Create the system task series.
+  const createSystem = series(
+    moveSystemMarkup,
+    prepSystemScripts,
+    moveSystemSass
+  );
 
-  // Latest
+// Build the production files.
 
-    // Copy the script as is.
-    function copyLatestScript() {
-      return src("src/scripts/**/*.js")
-      .pipe(replace("data-h2-" + component + "_VERSION", "data-h2-" + component))
+  // Importable Files
+
+    // Markup
+    function moveImportLatestMarkup() {
+      return src("src/markup/**/*")
       .pipe(replace("_VERSION", ""))
-      .pipe(rename(function(path) {
-        path.basename = componentPath + ".module";
-      }))
-      .pipe(dest("dist/latest/scripts"))
+      .pipe(dest("dist/import/latest/markup"))
     }
-
-    // Use Babel to convert the script.
-    function transpileLatestScript() {
-      return src("dist/latest/scripts/" + componentPath + ".module.js")
-      .pipe(babel({
-        presets: ['@babel/env']
-      }))
-      .pipe(rename(function(path) {
-        path.basename = componentPath + ".babel";
-      }))
-      .pipe(dest("dist/latest/scripts"));
-    }
-
-    // Use Browserify to compile the script into browser-ready code.
-    function compileLatestScript() {
-      return browserify("dist/latest/scripts/" + componentPath + ".babel.js")
-      .bundle()
-      .pipe(source(componentPath + ".js"))
-      .pipe(dest("dist/latest/scripts"));
-    }
-
-    // Minify the script.
-    function minifyLatestScript() {
-      return src("dist/latest/scripts/" + componentPath + ".js")
-      .pipe(uglify())
-      .pipe(rename(function(path) {
-        path.extname = ".min.js";
-      }))
-      .pipe(dest("dist/latest/scripts"));
-    }
-
-    // Gzip the script.
-    function gzipLatestScript() {
-      return src("dist/latest/scripts/" + componentPath + ".min.js")
-      .pipe(gzip())
-      .pipe(dest("dist/latest/scripts"));
-    }
-
-    // Export the a task series.
-    const prepLatestScripts = series(
-      copyLatestScript,
-      transpileLatestScript,
-      compileLatestScript,
-      minifyLatestScript,
-      gzipLatestScript
-    );
-
-  // Current Version
-
-    // Copy the script as is.
-    function copyVersionScript() {
-      return src("src/scripts/**/*.js")
-      .pipe(replace("data-h2-" + component + "_VERSION", componentVersion))
-      .pipe(replace("_VERSION", version))
-      .pipe(rename(function(path) {
-        path.basename = componentPath + ".module";
-      }))
-      .pipe(dest("dist/" + version + "/scripts"))
-    }
-
-    // Use Babel to convert the script.
-    function transpileVersionScript() {
-      return src("dist/" + version + "/scripts/" + componentPath + ".module.js")
-      .pipe(babel({
-        presets: ['@babel/env']
-      }))
-      .pipe(rename(function(path) {
-        path.basename = componentPath + ".babel";
-      }))
-      .pipe(dest("dist/" + version + "/scripts"));
-    }
-
-    // Use Browserify to compile the script into browser-ready code.
-    function compileVersionScript() {
-      return browserify("dist/" + version + "/scripts/" + componentPath + ".babel.js")
-      .bundle()
-      .pipe(source(componentPath + ".js"))
-      .pipe(dest("dist/" + version + "/scripts"));
-    }
-
-    // Minify the script.
-    function minifyVersionScript() {
-      return src("dist/" + version + "/scripts/" + componentPath + ".js")
-      .pipe(uglify())
-      .pipe(rename(function(path) {
-        path.extname = ".min.js";
-      }))
-      .pipe(dest("dist/" + version + "/scripts"));
-    }
-
-    // Gzip the script.
-    function gzipVersionScript() {
-      return src("dist/" + version + "/scripts/" + componentPath + ".min.js")
-      .pipe(gzip())
-      .pipe(dest("dist/" + version + "/scripts"));
-    }
-
-    // Export the a task series.
-    const prepVersionScripts = series(
-      copyVersionScript,
-      transpileVersionScript,
-      compileVersionScript,
-      minifyVersionScript,
-      gzipVersionScript
-    );
-
-// Styles
-
-  // Latest
-
-    // Import H2's core styles into the component.
-    function importLatestCoreSass() {
-      return src("node_modules/@hydrogen-design-system/core/dist/latest/styles/**/*.scss")
-      .pipe(dest("dist/latest/styles/core"));
-    }
-
-    // Copy the primary component styles.
-    function copyLatestPrimarySass() {
-      return src("src/styles/_component-" + component + ".scss")
-      .pipe(dest("dist/latest/styles"));
-    }
-
-    // Copy the import stylesheet.
-    function copyLatestSystemSass() {
-      return src("src/styles/h2-system-component-" + component + ".scss")
-      .pipe(replace("_VERSION", ""))
-      .pipe(rename(function(path) {
-        path.basename = "h2-system-" + component;
-      }))
-      .pipe(dest("dist/latest/styles"));
-    }
-
-    // Copy the version stylesheet for compiling.
-    function copyLatestVersionSass() {
-      return src("src/styles/h2-version-component-" + component + ".scss")
-      .pipe(replace("_VERSION", ""))
-      .pipe(rename(function(path) {
-        path.basename = componentPath;
-      }))
-      .pipe(dest("dist/latest/styles"));
-    }
-
-    // Compile the Sass into CSS.
-    function compileLatestSass() {
-      return src("dist/latest/styles/" + componentPath + ".scss")
-      .pipe(sass())
-      .pipe(postcss([autoprefixer()]))
-      .pipe(dest("dist/latest/styles"));
-    }
-
-    // Minify the CSS.
-    function minifyLatestSass() {
-      return src("dist/latest/styles/" + componentPath + ".css")
-      .pipe(postcss([cssnano()]))
-      .pipe(rename(function(path) {
-        path.extname = ".min.css";
-      }))
-      .pipe(dest("dist/latest/styles"));
-    }
-
-    // Gzip the CSS.
-    function gzipLatestSass() {
-      return src("dist/latest/styles/" + componentPath + ".min.css")
-      .pipe(gzip())
-      .pipe(dest("dist/latest/styles"));
-    }
-
-    // Export the task series.
-    const prepLatestSass = series(
-      importLatestCoreSass,
-      copyLatestPrimarySass,
-      copyLatestSystemSass,
-      copyLatestVersionSass,
-      compileLatestSass,
-      minifyLatestSass,
-      gzipLatestSass
-    );
-
-  // Current Version
-
-    // Import H2's core styles into the component.
-    function importVersionCoreSass() {
-      return src("node_modules/@hydrogen-design-system/core/dist/latest/styles/**/*.scss")
-      .pipe(dest("dist/" + version + "/styles/core"));
-    }
-
-    // Copy the primary component styles.
-    function copyVersionPrimarySass() {
-      return src("src/styles/_component-" + component + ".scss")
-      .pipe(dest("dist/" + version + "/styles"));
-    }
-
-    // Copy the version stylesheet for compiling.
-    function copyVersionVersionSass() {
-      return src("src/styles/h2-version-component-" + component + ".scss")
+    function moveImportInstancedMarkup() {
+      return src("src/markup/**/*")
       .pipe(replace("_VERSION", "-" + version))
-      .pipe(rename(function(path) {
-        path.basename = componentPath;
-      }))
-      .pipe(dest("dist/" + version + "/styles"));
+      .pipe(dest("dist/import/" + version + "/markup"))
     }
 
-    // Compile the Sass into CSS.
-    function compileVersionSass() {
-      return src("dist/" + version + "/styles/" + componentPath + ".scss")
-      .pipe(sass())
-      .pipe(postcss([autoprefixer()]))
-      .pipe(dest("dist/" + version + "/styles"));
-    }
+    // Scripts
 
-    // Minify the CSS.
-    function minifyVersionSass() {
-      return src("dist/" + version + "/styles/" + componentPath + ".css")
-      .pipe(postcss([cssnano()]))
-      .pipe(rename(function(path) {
-        path.extname = ".min.css";
-      }))
-      .pipe(dest("dist/" + version + "/styles"));
-    }
+      // Default Module
+      function moveImportLatestModule() {
+        return src("src/scripts/module.js")
+        .pipe(replace(dataH2ComponentDefault, dataH2Component))
+        .pipe(replace("_VERSION", ""))
+        .pipe(dest("dist/import/latest/scripts"))
+      }
+      function moveImportInstancedModule() {
+        return src("src/scripts/module.js")
+        .pipe(replace(dataH2ComponentDefault, dataH2ComponentVersion))
+        .pipe(replace("_VERSION", version))
+        .pipe(dest("dist/import/" + version + "/scripts"))
+      }
 
-    // Gzip the CSS.
-    function gzipVersionSass() {
-      return src("dist/" + version + "/styles/" + componentPath + ".min.css")
-      .pipe(gzip())
-      .pipe(dest("dist/" + version + "/styles"));
-    }
+      // Babelified Module
+      function babelifyImportLatestModule() {
+        return src("dist/import/latest/scripts/module.js")
+        .pipe(babel({
+          presets: ['@babel/env']
+        }))
+        .pipe(rename(function(path) {
+          path.basename = "module.babel";
+        }))
+        .pipe(dest("dist/import/latest/scripts"))
+      }
+      function babelifyImportInstancedModule() {
+        return src("dist/import/" + version + "/scripts/module.js")
+        .pipe(babel({
+          presets: ['@babel/env']
+        }))
+        .pipe(rename(function(path) {
+          path.basename = "module.babel";
+        }))
+        .pipe(dest("dist/import/" + version + "/scripts"))
+      }
+    
+    // Styles
 
-    // Export the task series.
-    const prepVersionSass = series(
-      importVersionCoreSass,
-      copyVersionPrimarySass,
-      copyVersionVersionSass,
-      compileVersionSass,
-      minifyVersionSass,
-      gzipVersionSass
+      // Move the core's styles.
+      function moveImportLatestCoreSass() {
+        return src("node_modules/@hydrogen-design-system/core/dist/styles/**/*")
+        .pipe(dest("dist/import/latest/styles/core"))
+      }
+      function moveImportInstancedCoreSass() {
+        return src("node_modules/@hydrogen-design-system/core/dist/styles/**/*")
+        .pipe(dest("dist/import/" + version + "/styles/core"))
+      }
+
+      // Move the component Sass.
+      function moveImportLatestComponentSass() {
+        return src("src/styles/_" + component + ".scss")
+        .pipe(dest("dist/import/latest/styles"))
+      }
+      function moveImportInstancedComponentSass() {
+        return src("src/styles/_" + component + ".scss")
+        .pipe(dest("dist/import/" + version + "/styles"))
+      }
+
+      // Move the instanced Sass.
+      function moveImportLatestIntanceSass() {
+        return src("src/styles/instance.scss")
+        .pipe(replace("_VERSION", ""))
+        .pipe(dest("dist/import/latest/styles"))
+      }
+      function moveImportInstancedIntanceSass() {
+        return src("src/styles/instance.scss")
+        .pipe(replace("_VERSION", "-" + version))
+        .pipe(dest("dist/import/" + version + "/styles"))
+      }
+
+    // Create the task series.
+    const importLatest = series(
+      moveImportLatestMarkup,
+      moveImportLatestModule,
+      babelifyImportLatestModule,
+      moveImportLatestCoreSass,
+      moveImportLatestComponentSass,
+      moveImportLatestIntanceSass
     );
+    const importInstanced = series(
+      moveImportInstancedMarkup,
+      moveImportInstancedModule,
+      babelifyImportInstancedModule,
+      moveImportInstancedCoreSass,
+      moveImportInstancedComponentSass,
+      moveImportInstancedIntanceSass
+    );
+
+  // Compiled Files
+
+    // Scripts
+
+      // Move, Babel Core
+      function moveCompiledLatestCoreScript() {
+        return src("node_modules/@hydrogen-design-system/core/dist/scripts/module.js")
+        .pipe(babel({
+          presets: ['@babel/env']
+        }))
+        .pipe(rename(function(path) {
+          path.basename = "core";
+        }))
+        .pipe(dest("dist/compile/latest"));
+      }
+      function moveCompiledInstancedCoreScript() {
+        return src("node_modules/@hydrogen-design-system/core/dist/scripts/module.js")
+        .pipe(babel({
+          presets: ['@babel/env']
+        }))
+        .pipe(rename(function(path) {
+          path.basename = "core";
+        }))
+        .pipe(dest("dist/compile/" + version));
+      }
+
+      // Move, Babel Module
+      function moveCompiledLatestModuleScript() {
+        return src("src/scripts/module.js")
+        .pipe(replace(dataH2ComponentDefault, dataH2Component))
+        .pipe(replace("_VERSION", ""))
+        .pipe(babel({
+          presets: ['@babel/env']
+        }))
+        .pipe(dest("dist/compile/latest"));
+      }
+      function moveCompiledInstancedModuleScript() {
+        return src("src/scripts/module.js")
+        .pipe(replace(dataH2ComponentDefault, dataH2ComponentVersion))
+        .pipe(replace("_VERSION", version))
+        .pipe(babel({
+          presets: ['@babel/env']
+        }))
+        .pipe(dest("dist/compile/" + version));
+      }
+
+      // Move, Babel Instance
+      function moveCompiledLatestInstanceScript() {
+        return src("src/scripts/instance.js")
+        .pipe(replace(dataH2ComponentDefault, dataH2Component))
+        .pipe(replace("_VERSION", ""))
+        .pipe(babel({
+          presets: ['@babel/env']
+        }))
+        .pipe(dest("dist/compile/latest"));
+      }
+      function moveCompiledInstancedInstanceScript() {
+        return src("src/scripts/instance.js")
+        .pipe(replace(dataH2ComponentDefault, dataH2ComponentVersion))
+        .pipe(replace("_VERSION", version))
+        .pipe(babel({
+          presets: ['@babel/env']
+        }))
+        .pipe(dest("dist/compile/" + version));
+      }
+
+      // Browserify
+      function browserifyCompiledLatestScript() {
+        return browserify("dist/compile/latest/instance.js")
+        .bundle()
+        .pipe(source(component + ".js"))
+        .pipe(dest("dist/compile/latest"));
+      }
+      function browserifyCompiledInstancedScript() {
+        return browserify("dist/compile/" + version + "/instance.js")
+        .bundle()
+        .pipe(source(component + ".js"))
+        .pipe(dest("dist/compile/" + version));
+      }
+
+      // Minify
+      function minifyCompiledLatestScript() {
+        return src("dist/compile/latest/" + component + ".js")
+        .pipe(uglify())
+        .pipe(rename(function(path) {
+          path.extname = ".min.js";
+        }))
+        .pipe(dest("dist/compile/latest"));
+      }
+      function minifyCompiledInstancedScript() {
+        return src("dist/compile/" + version + "/" + component + ".js")
+        .pipe(uglify())
+        .pipe(rename(function(path) {
+          path.extname = ".min.js";
+        }))
+        .pipe(dest("dist/compile/" + version));
+      }
+
+      // Delete Files
+      function deleteCompiledLatestScripts() {
+        return del([
+          "dist/compile/latest/core.js",
+          "dist/compile/latest/module.js",
+          "dist/compile/latest/instance.js",
+          "dist/compile/latest/" + component + ".js"
+        ])
+      }
+      function deleteCompiledInstancedScripts() {
+        return del([
+          "dist/compile/" + version + "/core.js",
+          "dist/compile/" + version + "/module.js",
+          "dist/compile/" + version + "/instance.js",
+          "dist/compile/" + version + "/" + component + ".js"
+        ])
+      }
+
+    // Styles
+
+      // Move Core
+      function moveCompiledLatestCoreSass() {
+        return src("node_modules/@hydrogen-design-system/core/dist/styles/*.scss")
+        .pipe(dest("dist/compile/latest/core/styles"));
+      }
+      function moveCompiledInstancedCoreSass() {
+        return src("node_modules/@hydrogen-design-system/core/dist/styles/*.scss")
+        .pipe(dest("dist/compile/" + version + "/core/styles"));
+      }
+
+      // Move Component
+      function moveCompiledLatestComponentSass() {
+        return src("src/styles/_" + component + ".scss")
+        .pipe(dest("dist/compile/latest"));
+      }
+      function moveCompiledInstancedComponentSass() {
+        return src("src/styles/_" + component + ".scss")
+        .pipe(dest("dist/compile/" + version));
+      }
+
+      // Move Instance
+      function moveCompiledLatestInstanceSass() {
+        return src("src/styles/instance.scss")
+        .pipe(replace("_VERSION", ""))
+        .pipe(dest("dist/compile/latest"));
+      }
+      function moveCompiledInstancedInstanceSass() {
+        return src("src/styles/instance.scss")
+        .pipe(replace("_VERSION", "-" + version))
+        .pipe(dest("dist/compile/" + version));
+      }
+
+      // Compile and Nano
+      function compileCompiledLatestSass() {
+        return src("dist/compile/latest/instance.scss")
+        .pipe(sass())
+        .pipe(postcss([autoprefixer()]))
+        .pipe(postcss([cssnano()]))
+        .pipe(rename(function(path) {
+          path.basename = component;
+          path.extname = ".min.css";
+        }))
+        .pipe(dest("dist/compile/latest"));
+      }
+      function compileCompiledInstancedSass() {
+        return src("dist/compile/" + version + "/instance.scss")
+        .pipe(sass())
+        .pipe(postcss([autoprefixer()]))
+        .pipe(postcss([cssnano()]))
+        .pipe(rename(function(path) {
+          path.basename = component;
+          path.extname = ".min.css";
+        }))
+        .pipe(dest("dist/compile/" + version));
+      }
+
+      // Delete Files
+      function deleteCompiledLatestSass() {
+        return del([
+          "dist/compile/latest/core",
+          "dist/compile/latest/_" + component + ".scss",
+          "dist/compile/latest/instance.scss"
+        ])
+      }
+      function deleteCompiledInstancedSass() {
+        return del([
+          "dist/compile/" + version + "/core",
+          "dist/compile/" + version + "/_" + component + ".scss",
+          "dist/compile/" + version + "/instance.scss"
+        ])
+      }
+
+    // Create the task series.
+    const compileLatest = series(
+      moveCompiledLatestCoreScript,
+      moveCompiledLatestModuleScript,
+      moveCompiledLatestInstanceScript,
+      browserifyCompiledLatestScript,
+      minifyCompiledLatestScript,
+      deleteCompiledLatestScripts,
+      moveCompiledLatestCoreSass,
+      moveCompiledLatestComponentSass,
+      moveCompiledLatestInstanceSass,
+      compileCompiledLatestSass,
+      deleteCompiledLatestSass
+    );
+    const compileInstanced = series(
+      moveCompiledInstancedCoreScript,
+      moveCompiledInstancedModuleScript,
+      moveCompiledInstancedInstanceScript,
+      browserifyCompiledInstancedScript,
+      minifyCompiledInstancedScript,
+      deleteCompiledInstancedScripts,
+      moveCompiledInstancedCoreSass,
+      moveCompiledInstancedComponentSass,
+      moveCompiledInstancedInstanceSass,
+      compileCompiledInstancedSass,
+      deleteCompiledInstancedSass
+    );
+
+  // GZIP Files
+  function gzipScript() {
+    return src("dist/compile/latest/" + component + ".min.js")
+    .pipe(gzip())
+    .pipe(dest("system/compressed"));
+  }
+  function gzipCSS() {
+    return src("dist/compile/latest/" + component + ".min.css")
+    .pipe(gzip())
+    .pipe(dest("system/compressed"));
+  }
+  const GZIP = series(
+    gzipScript,
+    gzipCSS
+  );
 
 // Utility Tasks
 
@@ -315,10 +419,10 @@ const componentVersion = "data-h2-" + component + "-" + version;
   // gulp build
   exports.exportBuild = series(
     cleanDist, 
-    prepLatestMarkup, 
-    prepLatestScripts, 
-    prepLatestSass, 
-    prepVersionMarkup, 
-    prepVersionScripts, 
-    prepVersionSass
+    createSystem,
+    importLatest,
+    importInstanced,
+    compileLatest,
+    compileInstanced,
+    GZIP
   );

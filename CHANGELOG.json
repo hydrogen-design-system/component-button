@@ -2,14 +2,17 @@
   "majors": [
     {
       "release": 0,
+      "date": null,
       "changes": [],
       "minors": [
         {
           "release": 0,
+          "date": null,
           "changes": [],
           "patches": [
             {
               "release": 9,
+              "date": null,
               "changes": [
                 "Updates the H2 core from 0.0.34 => 0.0.37.",
                 "Updates the development and production tasks to include Babel, allowing for the component to be imported as a module or browser-ready JavaScript.",
@@ -19,10 +22,19 @@
             },
             {
               "release": 10,
+              "date": null,
               "changes": [
                 "Updates the H2 core from 0.0.37 => 0.0.38.",
                 "Reconfigures the build script to output into a new folder layout containing the version and latest code in matching structures.",
                 "Removes the init script as it's no longer needed."
+              ]
+            },
+            {
+              "release": 11,
+              "date": "2020/NOV/19",
+              "changes": [
+                "Updates the H2 core from 0.0.38 => 0.0.40.",
+                "Reworks and simplifies the development and build scripts to output both a module and instanced version of component scripts."
               ]
             }
           ]

@@ -25,7 +25,8 @@ var json = JSON.parse(fs.readFileSync('./package.json'));
 // Set component and version variables.
 const component = json.component;
 const version = json.version.replace(/\./g, "");
-const componentVersion = "data-h2-" + component + "-" + version;
+const dataH2ComponentDefault = "data-h2-" + component + "_VERSION";
+const dataH2ComponentVersion = "data-h2-" + component + "-" + version;
 
 // Move and prepare the HTML.
 
@@ -41,75 +42,91 @@ const componentVersion = "data-h2-" + component + "-" + version;
 
 // Move, transpile, compile, and refresh JavaScript. 
 
-  // Transpile via Babel.
-  function transpileScripts() {
-    return src("src/scripts/h2-component-" + component + ".js")
-    .pipe(replace("data-h2-" + component + "_VERSION", componentVersion))
-    .pipe(replace("_VERSION", version))
+  // Import and Babel the core module.
+  function moveCoreModule() {
+    return src("node_modules/@hydrogen-design-system/core/dist/scripts/module.js")
     .pipe(babel({
       presets: ['@babel/env']
     }))
     .pipe(rename(function(path) {
-      path.basename = "h2-temp-component-" + component + "";
+      path.basename = "core";
+    }))
+    .pipe(dest("tests/cache"));
+  }
+
+  // Move the component module.
+  function moveModule() {
+    return src("src/scripts/module.js")
+    .pipe(replace(dataH2ComponentDefault, dataH2ComponentVersion))
+    .pipe(replace("_VERSION", version))
+    .pipe(babel({
+      presets: ['@babel/env']
+    }))
+    .pipe(dest("tests/cache"));
+  }
+
+  // Move move the component instance.
+  function moveComponent() {
+    return src("src/scripts/instance.js")
+    .pipe(replace(dataH2ComponentDefault, dataH2ComponentVersion))
+    .pipe(replace("_VERSION", version))
+    .pipe(babel({
+      presets: ['@babel/env']
     }))
     .pipe(dest("tests/cache"));
   }
 
   // Compile via Browserify.
   function browserifyScripts() {
-    return browserify("tests/cache/h2-temp-component-" + component + ".js")
+    return browserify("tests/cache/instance.js")
     .bundle()
-    .pipe(source("h2-component-" + component + ".js"))
+    .pipe(source(component + ".js"))
     .pipe(dest("tests/cache"));
-  }
-
-  // Remove the temp file.
-  function cleanScripts() {
-    return del("tests/cache/h2-temp-component-" + component + ".js");
   }
 
   // Create the task series.
   const makeScripts = series(
-    transpileScripts,
-    browserifyScripts,
-    cleanScripts
+    moveCoreModule,
+    moveModule,
+    moveComponent,
+    browserifyScripts
   );
 
 // Move and compile Sass.
 
   // Move the core system Sass from the module to the server cache.
-  function importCoreSass() {
-    return src("node_modules/@hydrogen-design-system/core/dist/latest/styles/*.scss")
-    .pipe(dest("tests/cache/core"));
+  function moveCoreSass() {
+    return src("node_modules/@hydrogen-design-system/core/dist/styles/*.scss")
+    .pipe(dest("tests/cache/core/styles"));
   }
 
   // Move the component Sass from dev to the server cache.
   function moveComponentSass() {
-    return src("src/styles/_component-" + component + ".scss")
+    return src("src/styles/_" + component + ".scss")
     .pipe(dest("tests/cache"));
   }
 
   // Move the versioned Sass from dev to the server cache.
   function moveVersionSass() {
-    return src("src/styles/h2-version-component-" + component + ".scss")
+    return src("src/styles/instance.scss")
     .pipe(replace("_VERSION", "-" + version))
-    .pipe(rename(function(path) {
-      path.basename = "h2-component-" + component + "";
-    }))
     .pipe(dest("tests/cache"));
   }
 
   // Compile the cached Sass into CSS.
   function compileSass() {
-    return src("tests/cache/h2-component-" + component + ".scss")
+    return src("tests/cache/instance.scss")
     .pipe(sass())
     .pipe(postcss([autoprefixer()]))
+    .pipe(rename(function(path) {
+      path.basename = component;
+    }))
     .pipe(dest("tests/cache"));
   }
 
   // Create the task series.
   const makeSass = series(
-    importCoreSass,
+    moveCoreSass,
     moveComponentSass,
     moveVersionSass,
     compileSass
