@@ -53,10 +53,7 @@ const dataH2ComponentVersion = "data-h2-" + component + "-" + version;
 
   // Styles
   function moveSystemSass() {
-    return src([
-      "src/styles/_" + component + ".scss",
-      "src/styles/system.scss"
-    ])
+    return src("src/styles/_" + component + ".scss")
     .pipe(dest("system/styles"))
   }
 

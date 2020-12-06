@@ -1,5 +1,5 @@
 // Hydrogen / Sass Maps
-
+@use "sass:color";
 @use "defaults" as *;
 
 // Alignment
@@ -30,16 +30,34 @@ $button-type-map: (
 // Color
 $color-map: (
   "white": $white,
-  "gray": $gray,
+  "gray-1": color.scale($black, $lightness: 90%),
+  "gray-2": color.scale($black, $lightness: 80%),
+  "gray-3": color.scale($black, $lightness: 70%),
+  "gray-4": color.scale($black, $lightness: 60%),
+  "gray-5": color.scale($black, $lightness: 50%),
+  "gray-6": color.scale($black, $lightness: 40%),
+  "gray-7": color.scale($black, $lightness: 30%),
+  "gray-8": color.scale($black, $lightness: 20%),
+  "gray-9": color.scale($black, $lightness: 10%),
   "black": $black,
   "go": $go,
   "slow": $slow,
   "stop": $stop,
-  "c1": $theme-color-1,
-  "c2": $theme-color-2,
-  "c3": $theme-color-3,
-  "c4": $theme-color-4,
-  "c5": $theme-color-5
+  "theme-1": $theme-color-1,
+  "theme-1-light": color.scale($theme-color-1, $lightness: 25%),
+  "theme-1-dark": color.scale($theme-color-1, $lightness: -15%, $saturation: -10%),
+  "theme-2": $theme-color-2,
+  "theme-2-light": color.scale($theme-color-2, $lightness: 25%),
+  "theme-2-dark": color.scale($theme-color-2, $lightness: -15%, $saturation: -10%),
+  "theme-3": $theme-color-3,
+  "theme-3-light": color.scale($theme-color-3, $lightness: 25%),
+  "theme-3-dark": color.scale($theme-color-3, $lightness: -15%, $saturation: -10%),
+  "theme-4": $theme-color-4,
+  "theme-4-light": color.scale($theme-color-4, $lightness: 25%),
+  "theme-4-dark": color.scale($theme-color-4, $lightness: -15%, $saturation: -10%),
+  "theme-5": $theme-color-5,
+  "theme-5-light": color.scale($theme-color-5, $lightness: 25%),
+  "theme-5-dark": color.scale($theme-color-5, $lightness: -15%, $saturation: -10%)
 );
 
 // Containers
@@ -83,10 +101,10 @@ $grid-alignment-map: (
 
 // Media
 $media-query-map: (
-  "mqb": "screen",
-  "mqs": $mq-small,
-  "mqm": $mq-medium,
-  "mql": $mq-large
+  "b": "screen",
+  "s": $mq-small,
+  "m": $mq-medium,
+  "l": $mq-large
 );
 
 // Opacity

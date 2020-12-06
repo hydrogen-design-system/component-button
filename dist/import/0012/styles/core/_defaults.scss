@@ -10,22 +10,22 @@ $border-radius-round: 5px !default;
 
   // Black & White
   $white: #FFFFFF !default;
-  $black: rgba(10, 10, 20, 1) !default;
+  $black: rgba(10, 10, 12, 1) !default;
 
   // Grey/Gray
   $gray:  rgba(125, 125, 125, 1) !default;
 
   // Theme Colors
-  $theme-color-1: #c59fff !default;
-  $theme-color-2: #9D5CFF !default;
-  $theme-color-3: #8E42FF !default;
-  $theme-color-4: #00E5E3 !default;
-  $theme-color-5: #0A9DAE !default;
+  $theme-color-1: #9D5CFF !default;
+  $theme-color-2: #FF5C6D !default;
+  $theme-color-3: #BEFF5C !default;
+  $theme-color-4: #5CFFEE !default;
+  $theme-color-5: #F7B452 !default;
 
   // Go, Slow, Stop
-  $go: green !default;
-  $slow: orange !default;
-  $stop: red !default;
+  $go: rgb(39, 180, 39) !default;
+  $slow: rgb(255, 180, 42) !default;
+  $stop: rgb(223, 18, 69) !default;
 
   // Focus
   $focus-color: $theme-color-1 !default;

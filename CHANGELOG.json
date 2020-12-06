@@ -36,6 +36,16 @@
                 "Updates the H2 core from 0.0.38 => 0.0.40.",
                 "Reworks and simplifies the development and build scripts to output both a module and instanced version of component scripts."
               ]
+            },
+            {
+              "release": 12,
+              "date": "2020/DEC/06",
+              "changes": [
+                "Updates the H2 core from 0.0.40 => 0.0.42.",
+                "Adds support for light and dark variations of colors, as well as a gray scale. (gray-1 through gray-9)",
+                "Breaking: changes the way colors are referenced. (c1 -> theme-1)",
+                "Removes the system SCSS file as it's no longer needed."
+              ]
             }
           ]
         }
