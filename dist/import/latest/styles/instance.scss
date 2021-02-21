@@ -94,3 +94,66 @@ a[data-h2-button] {
     }
   }
 }
+// Gradients
+@each $gradientKey, $gradientValue in maps.$gradient-map {
+  @each $styleKey, $styleValue in maps.$button-type-map {
+    [data-h2-button*="#{$gradientKey}"][data-h2-button*="#{$styleKey}"],
+    a[data-h2-button*="#{$gradientKey}"][data-h2-button*="#{$styleKey}"] {
+      @if (str-index($gradientKey, "-1-")) {
+        @include h2-component-button-gradient(
+          $gradient: $gradientValue,
+          $color: var.$theme-color-1,
+          $solid-font-color: fn.contrasting-color(var.$theme-color-1, var.$white, var.$black),
+          $gray: var.$gray,
+          $hover-bg-color: var.$hover-bg-color,
+          $hover-font-color: var.$hover-font-color,
+          $style: $styleKey
+        );
+      }
+      @if (str-index($gradientKey, "-2-")) {
+        @include h2-component-button-gradient(
+          $gradient: $gradientValue,
+          $color: var.$theme-color-2,
+          $solid-font-color: fn.contrasting-color(var.$theme-color-2, var.$white, var.$black),
+          $gray: var.$gray,
+          $hover-bg-color: var.$hover-bg-color,
+          $hover-font-color: var.$hover-font-color,
+          $style: $styleKey
+        );
+      }
+      @if (str-index($gradientKey, "-3-")) {
+        @include h2-component-button-gradient(
+          $gradient: $gradientValue,
+          $color: var.$theme-color-3,
+          $solid-font-color: fn.contrasting-color(var.$theme-color-3, var.$white, var.$black),
+          $gray: var.$gray,
+          $hover-bg-color: var.$hover-bg-color,
+          $hover-font-color: var.$hover-font-color,
+          $style: $styleKey
+        );
+      }
+      @if (str-index($gradientKey, "-4-")) {
+        @include h2-component-button-gradient(
+          $gradient: $gradientValue,
+          $color: var.$theme-color-4,
+          $solid-font-color: fn.contrasting-color(var.$theme-color-4, var.$white, var.$black),
+          $gray: var.$gray,
+          $hover-bg-color: var.$hover-bg-color,
+          $hover-font-color: var.$hover-font-color,
+          $style: $styleKey
+        );
+      }
+      @if (str-index($gradientKey, "-5-")) {
+        @include h2-component-button-gradient(
+          $gradient: $gradientValue,
+          $color: var.$theme-color-5,
+          $solid-font-color: fn.contrasting-color(var.$theme-color-5, var.$white, var.$black),
+          $gray: var.$gray,
+          $hover-bg-color: var.$hover-bg-color,
+          $hover-font-color: var.$hover-font-color,
+          $style: $styleKey
+        );
+      }
+    }
+  }
+}

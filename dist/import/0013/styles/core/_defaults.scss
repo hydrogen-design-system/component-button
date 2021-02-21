@@ -141,14 +141,16 @@ $layout-small: 39rem !default;
   // Large: 1600px
   $mq-large: "screen and (min-width: 100em)" !default;
 
+// Shadow Variables
+$shadow-small: 0 .15rem .4rem rgba(0, 0, 0, .3) !default;
+$shadow-medium: 0 .35rem .6rem rgba(0, 0, 0, .3) !default;
+$shadow-large: 0 .6rem .8rem rgba(0, 0, 0, .3) !default;
+
 // Whitespace Variables
 $margin: 1.5rem !default;
 $padding: 1.5rem !default;
 
 // Component Options
-
-  // Cards
-  $card-shadow: 0 5px 10px rgba(0, 0, 0, .3) !default;
 
   // Carousels
   $carousel-dot-color: lighten($gray, 35%) !default;

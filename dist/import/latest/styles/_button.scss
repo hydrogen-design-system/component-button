@@ -1,4 +1,5 @@
 // Hydrogen / Components / Button
+@use "sass:color";
 
 @mixin h2-component-button-reset() {
   padding: 0;
@@ -59,6 +60,7 @@
   $radius
 ) {
   border-radius: $radius;
+  overflow: hidden;
 }
 
 @mixin h2-component-button-size(
@@ -101,6 +103,93 @@
     border-style: solid;
     border-width: 1px;
     color: $solid-font-color;
+  }
+
+  @if $style == "outline" {
+    background: none;
+    border-color: $color;
+    border-style: solid;
+    border-width: 1px;
+    color: $color;
+  }
+
+  @if $style == "clear" {
+    background: none;
+    border: none;
+    color: $color;
+
+    @media (hover: hover) {
+      &:hover {
+        background: none;
+        border: none;
+        color: $hover-font-color;
+        transition: all .2s ease;
+      }
+    }
+
+  }
+
+  &:disabled,
+  &.disabled {
+    background: lighten($gray, 30%);
+    border-color: lighten($gray, 30%);
+    color: $gray;
+    pointer-events: none;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      background: rgba($hover-bg-color, .2);
+      border-color: $hover-bg-color;
+      color: $hover-font-color;
+      transition: all .2s ease;
+    }
+  }
+
+}
+
+@mixin h2-component-button-gradient(
+  $gradient,
+  $color,
+  $solid-font-color,
+  $gray,
+  $hover-bg-color,
+  $hover-font-color,
+  $style
+) {
+
+  @if $style == "solid" {
+    background: none;
+    border-width: 0;
+    color: $solid-font-color;
+    position: relative;
+    &:before {
+      background-image: $gradient;
+      content: "";
+      display: block;
+      height: 100%;
+      opacity: 1;
+      pointer-events: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transition: all .2s ease;
+      width: 100%;
+    }
+    * {
+      position: relative;
+    }
+    @media (hover: hover) {
+      &:hover {
+        background: rgba($hover-bg-color, .2);
+        color: $hover-font-color;
+        transition: all .2s ease;
+        &:before {
+          opacity: 0;
+          transition: all .2s ease;
+        }
+      }
+    }
   }
 
   @if $style == "outline" {

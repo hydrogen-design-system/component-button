@@ -1,6 +1,6 @@
 {
   "name": "@hydrogen-design-system/component-button",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "component": "button",
   "description": "Hydrogen's button component.",
   "keywords": [
@@ -26,13 +26,13 @@
   },
   "homepage": "https://hydrogen.design",
   "devDependencies": {
-    "@babel/core": "^7.12.9",
-    "@babel/preset-env": "^7.12.7",
-    "@hydrogen-design-system/core": "0.0.42",
+    "@babel/core": "^7.12.17",
+    "@babel/preset-env": "^7.12.17",
+    "@hydrogen-design-system/core": "0.0.44",
     "autoprefixer": "^9.7.3",
-    "browser-sync": "^2.26.13",
+    "browser-sync": "^2.26.14",
     "browserify": "^17.0.0",
-    "browserslist": "^4.15.0",
+    "browserslist": "^4.16.3",
     "cssnano": "^4.1.10",
     "del": "^3.0.0",
     "gulp": "^4.0.2",
@@ -44,7 +44,7 @@
     "gulp-replace": "^1.0.0",
     "gulp-sass": "^4.1.0",
     "gulp-uglify": "^3.0.1",
-    "sass": "^1.30.0",
+    "sass": "^1.32.8",
     "vinyl-source-stream": "^2.0.0",
     "yargs": "^15.4.0"
   },

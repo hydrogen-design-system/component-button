@@ -22,8 +22,8 @@
 @use "button" as *;
 
 // Load the core and component mixins within the versioned component attribute, while passing them their respective theme variables.
-// -0012 is replaced during the Gulp build script with the current component version, set in Gulpfile.js, before Sass is compiled.
-[data-h2-button-0012] {
+// -0013 is replaced during the Gulp build script with the current component version, set in Gulpfile.js, before Sass is compiled.
+[data-h2-button-0013] {
   // Load the component's unique reset styles.
   @include h2-component-button-reset();
   // Load the core.
@@ -39,7 +39,7 @@
 }
 
 // Load anchor specific button mixin.
-a[data-h2-button-0012] {
+a[data-h2-button-0013] {
   @include h2-component-button-anchor(
     $font-default: var.$font-default,
     $focus-color: var.$focus-color
@@ -48,8 +48,8 @@ a[data-h2-button-0012] {
 
 // Load the color button styles with their respective theme variables.
 @each $colorKey, $colorValue in maps.$color-map {
-  [data-h2-button-0012*="#{$colorKey}"],
-  a[data-h2-button-0012*="#{$colorKey}"] {
+  [data-h2-button-0013*="#{$colorKey}"],
+  a[data-h2-button-0013*="#{$colorKey}"] {
     @include h2-component-button-color(
       $color: $colorValue,
       $gray: var.$gray
@@ -58,8 +58,8 @@ a[data-h2-button-0012] {
 }
 // Load the radius button styles with their respective theme variables.
 @each $radiusKey, $radiusValue in maps.$object-radius-map {
-  [data-h2-button-0012*="#{$radiusKey}"],
-  a[data-h2-button-0012*="#{$radiusKey}"] {
+  [data-h2-button-0013*="#{$radiusKey}"],
+  a[data-h2-button-0013*="#{$radiusKey}"] {
     @include h2-component-button-radius(
       $radius: $radiusValue
     );
@@ -67,8 +67,8 @@ a[data-h2-button-0012] {
 }
 // Load the size button styles with their respective theme variables.
 @each $sizeKey, $sizeValue in maps.$size-map {
-  [data-h2-button-0012*="#{$sizeKey}"],
-  a[data-h2-button-0012*="#{$sizeKey}"] {
+  [data-h2-button-0013*="#{$sizeKey}"],
+  a[data-h2-button-0013*="#{$sizeKey}"] {
     @include h2-component-button-size(
       $font-small: var.$font-scale-small,
       $font-medium: var.$font-scale-default,
@@ -81,8 +81,8 @@ a[data-h2-button-0012] {
 // Load the style button styles with their respective theme variables - the style variations also have color implications, hence the color loop.
 @each $colorKey, $colorValue in maps.$color-map {
   @each $styleKey, $styleValue in maps.$button-type-map {
-    [data-h2-button-0012*="#{$colorKey}"][data-h2-button-0012*="#{$styleKey}"],
-    a[data-h2-button-0012*="#{$colorKey}"][data-h2-button-0012*="#{$styleKey}"] {
+    [data-h2-button-0013*="#{$colorKey}"][data-h2-button-0013*="#{$styleKey}"],
+    a[data-h2-button-0013*="#{$colorKey}"][data-h2-button-0013*="#{$styleKey}"] {
       @include h2-component-button-style(
         $color: $colorValue,
         $solid-font-color: fn.contrasting-color($colorValue, var.$white, var.$black),
@@ -91,6 +91,69 @@ a[data-h2-button-0012] {
         $hover-font-color: var.$hover-font-color,
         $style: $styleKey
       );
+    }
+  }
+}
+// Gradients
+@each $gradientKey, $gradientValue in maps.$gradient-map {
+  @each $styleKey, $styleValue in maps.$button-type-map {
+    [data-h2-button-0013*="#{$gradientKey}"][data-h2-button-0013*="#{$styleKey}"],
+    a[data-h2-button-0013*="#{$gradientKey}"][data-h2-button-0013*="#{$styleKey}"] {
+      @if (str-index($gradientKey, "-1-")) {
+        @include h2-component-button-gradient(
+          $gradient: $gradientValue,
+          $color: var.$theme-color-1,
+          $solid-font-color: fn.contrasting-color(var.$theme-color-1, var.$white, var.$black),
+          $gray: var.$gray,
+          $hover-bg-color: var.$hover-bg-color,
+          $hover-font-color: var.$hover-font-color,
+          $style: $styleKey
+        );
+      }
+      @if (str-index($gradientKey, "-2-")) {
+        @include h2-component-button-gradient(
+          $gradient: $gradientValue,
+          $color: var.$theme-color-2,
+          $solid-font-color: fn.contrasting-color(var.$theme-color-2, var.$white, var.$black),
+          $gray: var.$gray,
+          $hover-bg-color: var.$hover-bg-color,
+          $hover-font-color: var.$hover-font-color,
+          $style: $styleKey
+        );
+      }
+      @if (str-index($gradientKey, "-3-")) {
+        @include h2-component-button-gradient(
+          $gradient: $gradientValue,
+          $color: var.$theme-color-3,
+          $solid-font-color: fn.contrasting-color(var.$theme-color-3, var.$white, var.$black),
+          $gray: var.$gray,
+          $hover-bg-color: var.$hover-bg-color,
+          $hover-font-color: var.$hover-font-color,
+          $style: $styleKey
+        );
+      }
+      @if (str-index($gradientKey, "-4-")) {
+        @include h2-component-button-gradient(
+          $gradient: $gradientValue,
+          $color: var.$theme-color-4,
+          $solid-font-color: fn.contrasting-color(var.$theme-color-4, var.$white, var.$black),
+          $gray: var.$gray,
+          $hover-bg-color: var.$hover-bg-color,
+          $hover-font-color: var.$hover-font-color,
+          $style: $styleKey
+        );
+      }
+      @if (str-index($gradientKey, "-5-")) {
+        @include h2-component-button-gradient(
+          $gradient: $gradientValue,
+          $color: var.$theme-color-5,
+          $solid-font-color: fn.contrasting-color(var.$theme-color-5, var.$white, var.$black),
+          $gray: var.$gray,
+          $hover-bg-color: var.$hover-bg-color,
+          $hover-font-color: var.$hover-font-color,
+          $style: $styleKey
+        );
+      }
     }
   }
 }

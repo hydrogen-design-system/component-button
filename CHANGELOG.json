@@ -46,6 +46,14 @@
                 "Breaking: changes the way colors are referenced. (c1 -> theme-1)",
                 "Removes the system SCSS file as it's no longer needed."
               ]
+            },
+            {
+              "release": 13,
+              "date": "2021/FEB/21",
+              "changes": [
+                "Updates the H2 core from 0.0.42 => 0.0.44.",
+                "Adds support gradient buttons."
+              ]
             }
           ]
         }
